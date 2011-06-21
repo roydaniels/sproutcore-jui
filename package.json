@@ -1,7 +1,7 @@
 {
   "name": "sproutcore-jui",
-  "description": "SproutCore 2.0 jQuery UI",
-  "summary": "SproutCore 2.0 jQuery UI",
+  "description": "SproutCore JUI",
+  "summary": "SproutCore 2.0 and jQuery UI",
   "homepage": "http://github.com/tchak/sproutcore-jui",
   "author": "Paul Chavard",
   "version": "0.1.0",

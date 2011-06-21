@@ -5,6 +5,6 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-require("sproutcore-views");
+require("./support");
 require("./textfield");
 require("./select");

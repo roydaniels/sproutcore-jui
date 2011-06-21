@@ -5,16 +5,16 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>SproutCore 2.0 and jQuery UI examples</title>
+  <title>SproutCore 2.0 and SproutCore JUI</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
-  <script type="text/javascript" src="../pkg/sproutcore/sproutcore-2.0.beta.1.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2rc1.js"></script>
+  <script type="text/javascript" src="js/libs/sproutcore-2.0.beta.1.js"></script>
 
-  <link rel="stylesheet" href="../pkg/sproutcore-jui-aristo/sproutcore-jui-boilerplate-0.1.0.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/boilerplate.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="../pkg/sproutcore-jui-aristo/sproutcore-jui-aristo-0.1.0.css" type="text/css" media="screen" charset="utf-8">
 
   <script type="text/javascript" src="../pkg/jquery-ui/jquery-ui.js"></script>
@@ -58,7 +58,7 @@
 </head>
 
 <body>
-  <h1>SproutCore 2.0 and jQuery UI examples</h1>
+  <h1>SproutCore 2.0 and SproutCore JUI</h1>
   
   <script type="text/html">
     <h2>Autocomplete and CollectionView:</h2>
@@ -70,7 +70,7 @@
     <h2>Datepicker:</h2>
     {{view JUI.Datepicker}}
 
-    <h2>Buttons :</h2>
+    <h2>Buttons:</h2>
     {{#view Demo.Buttons}}
       <div id="divButton">&lt;DIV&gt; Button</div>
       <a id="linkButton" href="#">&lt;A href="#"&gt; Button</a>
@@ -83,6 +83,7 @@
     {{view JUI.Button label="Open Info Dialog" target="Demo.dialogsController" action="openInfoDialog"}}
     {{view JUI.Button label="Open Error Dialog" target="Demo.dialogsController" action="openErrorDialog"}}
     {{view JUI.Button label="Open Confirmation Dialog" target="Demo.dialogsController" action="openConfirmDialog"}}
+    {{view JUI.Button label="Disabled Button" disabled=true}}
 
     <h2>Slider:</h2>
     {{view Demo.StepSlider range="min" valueBinding="Demo.sliderController.value"}}
@@ -112,7 +113,7 @@
   </script>
 
   <footer>
-    Source code viewable on <a href="https://github.com/tchak/sproutcore-jquery-ui">GitHub</a>
+    Source code viewable on <a href="https://github.com/tchak/sproutcore-jui">GitHub</a>
   </footer>
 </body>
 </html>

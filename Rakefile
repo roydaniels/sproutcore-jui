@@ -4,7 +4,7 @@ require 'compass'
 
 PACKAGES = {
   :views => [
-    'button',
+    'support',
     'textfield',
     'select'
   ],
@@ -116,18 +116,23 @@ end
 
 def build_stylesheet_package name
   puts "Build #{name} package..."
-  content = ''
   package_name = "#{NAMESPACE}-#{name}"
   base_path = "packages/#{package_name}/lib"
-  paths = Compass.configuration.sass_load_paths + [File.expand_path(base_path)]
-  Compass.configuration.images_path = File.join(base_path, 'images')  
-  engine = Sass::Engine.new(File.read(File.join(base_path, "#{name}.scss")), :syntax => :scss, :load_paths => paths)
-
-  puts "Compress #{name} package..."
+  engine = create_scss_engine(base_path, name)
   mkpath_if_do_not_exists "#{DIST_DIR}/#{package_name}"
+
+  puts "Process #{name} package..."
   File.open("#{DIST_DIR}/#{package_name}/#{package_name}-#{VERSION}.css", 'w') do |f|
     f << engine.render
   end
+end
+
+def create_scss_engine path, filename
+  Compass.configuration.images_path = File.join(path, 'images')  
+  Sass::Engine.new(File.read(File.join(path, "#{filename}.scss")),
+    :syntax => :scss,
+    :load_paths => Compass.configuration.sass_load_paths + [File.expand_path(path)]
+  )
 end
 
 def mkpath_if_do_not_exists path

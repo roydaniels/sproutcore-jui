@@ -10,7 +10,6 @@
  * - praegnanz.de/weblog/htmlcssjs-kickstart
  */
 
-
 /**
  * html5doctor.com Reset Stylesheet (Eric Meyer's Reset Reloaded + HTML5 baseline)
  * v1.6.1 2010-09-17 | Authors: Eric Meyer & Richard Clark
@@ -71,15 +70,14 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 
 /* 1) Always force a scrollbar in non-IE 
    2) Remove iOS text size adjust without disabling user zoom: www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
-html { overflow-y: scroll; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
-  
-
+html {
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
 
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
-
-a, a:active, a:visited { color: #607890; }
-a:hover { color: #036; }
 
 ul, ol { margin-left: 2em; }
 ol { list-style-type: decimal; }
@@ -93,7 +91,11 @@ b, strong, th { font-weight: bold; }
 td { vertical-align: top; }
 
 /* Set sub, sup without affecting line-height: gist.github.com/413930 */
-sub, sup { font-size: 75%; line-height: 0; position: relative; }
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 
@@ -103,18 +105,30 @@ pre {
   padding: 15px;
 }
 
-.ie6 legend, .ie7 legend { margin-left: -7px; } 
+.ie6 legend, .ie7 legend {
+  margin-left: -7px;
+} 
 
 /* 1) Make inputs and buttons play nice in IE: www.viget.com/inspire/styling-the-button-element-in-internet-explorer/
    2) WebKit browsers add a 2px margin outside the chrome of form elements. 
       Firefox adds a 1px margin above and below textareas 
    3) Set font-size to match <body>'s, and font-family to sans-serif 
    4) Align to baseline */
-button, input, select, textarea { width: auto; overflow: visible; margin: 0; font-size: 100%; font-family: sans-serif; vertical-align: baseline; }
+button, input, select, textarea {
+  width: auto;
+  overflow: visible;
+  margin: 0;
+  font-size: 100%;
+  font-family: sans-serif;
+  vertical-align: baseline;
+}
 
 /* 1) Remove default scrollbar in IE: www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/
    2) Align to text-top */
-textarea { overflow: auto; vertical-align:text-top; }
+textarea {
+  overflow: auto;
+  vertical-align:text-top;
+}
 
 /* Hand cursor on clickable input elements */
 label, input[type="button"], input[type="submit"], input[type="image"], button { cursor: pointer; }
@@ -123,15 +137,9 @@ label, input[type="button"], input[type="submit"], input[type="image"], button {
 input::-moz-focus-inner,
 button::-moz-focus-inner { border: 0; padding: 0; }
 
-/* Colors for form validity */
-input:valid, textarea:valid {  }
-input:invalid, textarea:invalid { border-radius: 1px; -moz-box-shadow: 0px 0px 5px red; -webkit-box-shadow: 0px 0px 5px red; box-shadow: 0px 0px 5px red; }
-.no-boxshadow input:invalid, .no-boxshadow textarea:invalid { background-color: #f0dddd; }
-
 /* Bicubic resizing for non-native sized IMG:
    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
 .ie7 img { -ms-interpolation-mode: bicubic; }
-
 
 /**
  * You might tweak these..
@@ -152,20 +160,11 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; }
    Also: hot pink! */
 ::-moz-selection { background: #afd6ed; color:#fff; text-shadow: none; }
 ::selection { background:#afd6ed; color:#fff; text-shadow: none; }
+
+/* Links colors */
+a, a:active, a:visited { color: #607890; }
+a:hover { color: #036; }
 a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-color */
-
-
-/**
- * Primary styles
- *
- * Author: 
- */
-
-
-
-
-
-
 
 /**
  * Print styles.

@@ -1,13 +1,6 @@
 /*
  * jQuery UI CSS Framework 1.9m5
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Theming/API
- *
- * To view and modify this theme, visit http://jqueryui.com/themeroller/
+ * Aristo Theme
  */
 
 @import "compass/css3/border-radius";
@@ -17,9 +10,23 @@
 @import "compass/css3/transition";
 @import "compass/css3/transform";
 @import "compass/css3/inline-block";
+@import "compass/css3/images";
+@import "compass/css3/appearance";
 
 @import "jquery-ui/jquery.ui.base";
 @import "icons";
+
+$default-border-color: #a7a7a7;
+$hover-border-color: #456ec8;
+
+$default-gradient: linear-gradient(center top, #fefefe, #e7e7e7);
+$active-gradient: linear-gradient(center top, #e4e4e4, #d0d0d0);
+$focus-gradient: linear-gradient(center top, #7099f1, #5881d9);
+$focus-active-gradient: linear-gradient(center top, #7099f1, #5881d9);
+
+$default-color: #262626;
+$highlight-color: #658ee6;
+$disabled-color: #c7c7c7;
 
 /* Component containers
 ----------------------------------*/
@@ -36,22 +43,25 @@
   font-size: 1em;
 }
 .ui-widget-content {
-  border: 1px solid #B6B6B6;
-  background-color: #ffffff;
-  color: #4F4F4F;
+  border: 1px solid $default-border-color;
+  color: $default-color;
+  background-color: white;
 }
 .ui-widget-content a {
-  color: #4F4F4F;
+  color: $default-color;
 }
 .ui-widget-header {
-  border: 1px solid #B6B6B6;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #ededed), color-stop(0, #c4c4c4));
-  background: -moz-linear-gradient(center top, #ededed, #c4c4c4);
-  color: #4F4F4F;
+  border: 1px solid $default-border-color;
+  color: $default-color;
   font-weight: bold;
+  @include background-image($default-gradient);
 }
 .ui-widget-header a {
-  color: #4F4F4F;
+  color: $default-color;
+}
+
+.ui-icon {
+  display:inline-block;
 }
 
 /* Interaction states
@@ -59,47 +69,58 @@
 
 /* Default State */
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-  border: 1px solid #B6B6B6;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #ededed), color-stop(0, #c4c4c4));
-  background: -moz-linear-gradient(center top, #ededed, #c4c4c4);
-  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
-  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  border: 1px solid $default-border-color;
+  color: $default-color;
   font-weight: normal;
-  color: #4F4F4F;
+  @include background-image($default-gradient);
 }
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-  color: #4F4F4F;
-  text-decoration: none;
+.ui-state-default {
+  a, a:link, a:visited {
+    color: $default-color;
+    text-decoration: none;
+  }
 }
 
 /* Hover State */
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-  border: 1px solid #9D9D9D;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, rgb(185,224,245)), color-stop(0, rgb(146,189,214)));
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover {
+  border: 1px solid $hover-border-color;
+  color: $default-color;
   font-weight: normal;
-  color: #313131;
 }
-.ui-state-hover a, .ui-state-hover a:hover {
-  color: #313131;
-  text-decoration: none;
+.ui-state-hover {
+  a, a:hover {
+    color: $default-color;
+    text-decoration: none;
+  }
+}
+
+/* Focus */
+.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+  border: 1px solid $hover-border-color;
+  color: white;
+  font-weight: normal;
+  outline: none;
+  @include background-image($focus-gradient);
+  //@include box-shadow(none);
 }
 
 /* Active State */
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-  border: 1px solid #7096ab;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #b9e0f5), color-stop(0, #92bdd6));
-  background: -moz-linear-gradient(center top, #b9e0f5, #92bdd6);
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-
+  border: 1px solid $default-border-color;
+  color: $default-color;
   font-weight: normal;
-  color: #1c4257;
-
   outline: none;
+  @include background-image($active-gradient);
+  //@include box-shadow(none);
 }
-.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
-  color: #313131;
-  text-decoration: none;
+.ui-state-active {
+  a, a:link, a:visited {
+    color: $default-color;
+    text-decoration: none;
+  }
+}
+.ui-state-focus.ui-state-active, .ui-widget-content .ui-state-focus.ui-state-active, .ui-widget-header .ui-state-focus.ui-state-active {
+  @include background-image($focus-active-gradient);
 }
 
 .ui-widget :active { outline: none; }
@@ -107,18 +128,17 @@
 /* Interaction Cues
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
-  border: 1px solid #d2dbf4;
-  color: #0d2054;
-  background-color: #f4f8fd;
-  border-radius: 0 !important;
+  border: 1px solid $hover-border-color;
+  color: white;
+  background-color: $highlight-color;
+  @include border-radius(0 !important);
 }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a {
-  color: #363636;
+  color: white;
 }
 
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
   border: 1px solid #cd0a0a;
-  background: #fef1ec url(images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
   color: #cd0a0a;
 }
 .ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a {
@@ -132,13 +152,13 @@
 }
 
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary {
-  @include opacity(0.7);
   font-weight: normal;
+  @include opacity(0.7);
 }
 
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
-  @include opacity(0.35);
-  background-image: none;
+  color: $disabled-color;
+  @include opacity(0.95);
 }
 
 /* Misc visuals
@@ -146,34 +166,36 @@
 
 /* Corner radius */
 .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-  @include border-top-left-radius(2px);
+  @include border-top-left-radius(3px);
 }
 .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-  @include border-top-right-radius(2px);
+  @include border-top-right-radius(3px);
 }
 .ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-  @include border-bottom-left-radius(2px);
+  @include border-bottom-left-radius(3px);
 }
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-  @include border-bottom-right-radius(2px);
+  @include border-bottom-right-radius(3px);
 }
 
 /* Overlays */
 .ui-widget-overlay {
-  @include opacity(0.7);
   background: #262b33;
+  @include opacity(0.7);
 }
 .ui-widget-shadow {
   margin: -8px 0 0 -8px;
   padding: 8px;
-  @include opacity(0.3);
   background: #000000;
+  @include opacity(0.3);
   @include border-radius(8px);
 }
 
+/* Widgets */
+
 /* Button */
 .ui-button {
-  @include transition(all, 0.25s, ease-in-out);
+  @include transition(all, 0.15s, ease-in-out);
 }
 
 .ui-button-text-only .ui-button-text, input.ui-button {
@@ -185,9 +207,13 @@ input.ui-button {
   padding: .5em 1em;
 }
 
-.ui-button.ui-state-hover { 
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255,255,255,0.8) inset;
+.ui-button.ui-state-hover:not(.ui-state-active) {
+  @include box-shadow($highlight-color 0px 0px 5px);
 }
+.ui-button.ui-state-active {
+  @include box-shadow(none);
+}
+
 
 /* UI Tabs */
 .ui-tabs {
@@ -197,9 +223,9 @@ input.ui-button {
 .ui-tabs .ui-tabs-nav {
   margin: 0;
   padding: 0;
-  @include border-radius(0);
   background: transparent;
   border-width: 0 0 1px 0;
+  @include border-radius(0);
 }
 
 .ui-tabs .ui-tabs-nav li {
@@ -213,7 +239,7 @@ input.ui-button {
 .ui-tabs .ui-tabs-nav li a {
   padding: .5em 1em;
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  @include text-shadow(rgba(255, 255, 255, 0.5) 0 1px 0);
 }
 
 .ui-tabs .ui-tabs-panel {
@@ -222,7 +248,7 @@ input.ui-button {
 
 /* UI Autocomplete */
 .ui-autocomplete {
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  @include box-shadow(rgba(0, 0, 0, 0.3) 0 1px 5px);
 }
 
 /* UI Menu */
@@ -230,50 +256,46 @@ input.ui-button {
 .ui-menu .ui-menu-item a.ui-state-active {
   background: #5f83b9;
   color: #FFFFFF;
-  text-shadow: 0px 1px 1px #234386;
   border-color: #466086;
+  @include text-shadow(#234386 0px 1px 1px);
   @include border-radius(0);
 }
 
 /* UI Dialog */
 .ui-dialog {
   padding: 0;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
-}
-.ui-dialog .ui-dialog-titlebar {
-  border: none;
-  border-bottom: 1px solid #979797;
-  @include border-radius(0);
-}
-.ui-dialog .ui-dialog-title {
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  @include box-shadow(rgba(0, 0, 0, 0.6) 0 2px 12px);
+  .ui-dialog-titlebar {
+    border: none;
+    border-bottom: 1px solid $default-border-color;
+    @include border-radius(0);
+  }
+  .ui-dialog-title {
+    @include text-shadow(rgba(255, 255, 255, 0.5) 0 1px 0);
+  }
 }
 
 /* UI Slider */
 .ui-slider {
-  background: #d7d7d7;
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5) inset;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5) inset;
+  background: #d6d6d6;
+  @include box-shadow(rgba(0,0,0,0.5) 0 1px 2px inset);
 
   .ui-slider-handle {
     width: 23px;
     height: 23px;
     border: none;
     outline: none;
-
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-
     background-position:-92px -23px;
+    @include box-shadow(none);
+
     &.ui-state-hover { background-position:-138px -23px; }
     &.ui-state-active { background-position:-161px -23px; }
     &.ui-state-disabled { background-position:-207px -23px; }
   }
 
   .ui-slider-range {
-    background: #a3cae0;
-    -moz-box-shadow: 0 1px 2px rgba(17,35,45,0.6) inset;
-    -webkit-box-shadow: 0 1px 2px rgba(17,35,45,0.6) inset;
+    background:$highlight-color;
+    @include box-shadow(rgba(17,35,45,0.6) 0 1px 2px inset);
   }
 }
 
@@ -285,36 +307,49 @@ input.ui-button {
   }
 }
 
-/* UI Progressbar */
-.ui-progressbar, .ui-progressbar .ui-progressbar-value {
-  background-image: inline-image("progress_bar.gif");
-  background-repeat: repeat-x;
+.ui-datepicker {
+  padding: 0;
+  @include box-shadow(rgba(0, 0, 0, 0.6) 0 2px 12px);
+  .ui-datepicker-header {
+    border: none;
+    border-bottom: 1px solid $default-border-color;
+    @include border-radius(0);
+  }
+  .ui-state-default {
+    background-image: none;
+  }
+  .ui-state-active {
+    @include background-image($active-gradient);
+  }
 }
 
+/* UI Progressbar */
 .ui-progressbar {
   height: 12px;
-  background-position: 0 -14px;
+  @include background-image($default-gradient);
   .ui-progressbar-value {
-    background-position: 0 0;
+    @include background-image($active-gradient);
   }
 }
 
 /* UI Tooltip */
 .ui-tooltip {
-  box-shadow: 0 0 5px #aaaaaa;
+  @include box-shadow(rgba(0, 0, 0, 0.6) 0 2px 12px);
 }
 
+
+/* SC Controls */
 .sc-checkbox input[type="checkbox"], .ui-slider .ui-slider-handle {
-  background-image: inline-image("sprite-aristo.png");
+  background-image: inline-image("controls.png");
   background-repeat: no-repeat;
 }
 
 .sc-checkbox input[type="checkbox"] {
-  -khtml-appearance: none;
   width: 23px;
   height: 23px;
-
   background-position:0 0;
+  @include appearance(none);
+
   &:hover { background-position:-46px 0; }
   &:active { background-position:-69px 0; }
   &:disabled { background-position:-184px 0; }
@@ -325,4 +360,21 @@ input.ui-button {
     &:active { background-position:-161px 0; }
     &:disabled { background-position:-207px 0; }
   }
+}
+
+.sc-text-field textarea, .sc-text-field input {
+  border: 1px solid $default-border-color;
+  outline: none;
+  @include border-radius(2px);
+  @include box-shadow(rgba(0, 0, 0, 0.1) 0 1px 3px inset, rgba(255, 255, 255, 0.2) 0 1px 0);
+  @include transition(all, 0.15s, ease-in-out);
+}
+
+.sc-text-field textarea:hover, .sc-text-field input:hover {
+  @include box-shadow(rgba(0, 0, 0, 0.2) 0 1px 3px inset, rgba(255, 255, 255, 0.2) 0 1px 0);
+}
+
+.sc-text-field textarea:focus, .sc-text-field input:focus {
+  border: 1px solid #95bdd4;
+  @include box-shadow($highlight-color 0 1px 2px inset, rgba(255, 255, 255, 0.2) 0 1px 0);
 }

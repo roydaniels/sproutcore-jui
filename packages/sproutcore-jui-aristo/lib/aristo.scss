@@ -1,0 +1,328 @@
+/*
+ * jQuery UI CSS Framework 1.9m5
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ *
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/
+ */
+
+@import "compass/css3/border-radius";
+@import "compass/css3/opacity";
+@import "compass/css3/box-shadow";
+@import "compass/css3/text-shadow";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+@import "compass/css3/inline-block";
+
+@import "jquery-ui/jquery.ui.base";
+@import "icons";
+
+/* Component containers
+----------------------------------*/
+.ui-widget {
+  font-family: Arial,sans-serif;
+  font-size: 1em;
+}
+
+.ui-widget .ui-widget {
+  font-size: 0.9em;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-family: Arial,sans-serif;
+  font-size: 1em;
+}
+.ui-widget-content {
+  border: 1px solid #B6B6B6;
+  background-color: #ffffff;
+  color: #4F4F4F;
+}
+.ui-widget-content a {
+  color: #4F4F4F;
+}
+.ui-widget-header {
+  border: 1px solid #B6B6B6;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #ededed), color-stop(0, #c4c4c4));
+  background: -moz-linear-gradient(center top, #ededed, #c4c4c4);
+  color: #4F4F4F;
+  font-weight: bold;
+}
+.ui-widget-header a {
+  color: #4F4F4F;
+}
+
+/* Interaction states
+----------------------------------*/
+
+/* Default State */
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  border: 1px solid #B6B6B6;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #ededed), color-stop(0, #c4c4c4));
+  background: -moz-linear-gradient(center top, #ededed, #c4c4c4);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  font-weight: normal;
+  color: #4F4F4F;
+}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+  color: #4F4F4F;
+  text-decoration: none;
+}
+
+/* Hover State */
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+  border: 1px solid #9D9D9D;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, rgb(185,224,245)), color-stop(0, rgb(146,189,214)));
+  font-weight: normal;
+  color: #313131;
+}
+.ui-state-hover a, .ui-state-hover a:hover {
+  color: #313131;
+  text-decoration: none;
+}
+
+/* Active State */
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+  border: 1px solid #7096ab;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, #b9e0f5), color-stop(0, #92bdd6));
+  background: -moz-linear-gradient(center top, #b9e0f5, #92bdd6);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+
+  font-weight: normal;
+  color: #1c4257;
+
+  outline: none;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+  color: #313131;
+  text-decoration: none;
+}
+
+.ui-widget :active { outline: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+  border: 1px solid #d2dbf4;
+  color: #0d2054;
+  background-color: #f4f8fd;
+  border-radius: 0 !important;
+}
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a {
+  color: #363636;
+}
+
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+  border: 1px solid #cd0a0a;
+  background: #fef1ec url(images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
+  color: #cd0a0a;
+}
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a {
+  color: #cd0a0a;
+}
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text {
+  color: #cd0a0a;
+}
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary {
+  font-weight: bold;
+}
+
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary {
+  @include opacity(0.7);
+  font-weight: normal;
+}
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+  @include opacity(0.35);
+  background-image: none;
+}
+
+/* Misc visuals
+----------------------------------*/
+
+/* Corner radius */
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+  @include border-top-left-radius(2px);
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+  @include border-top-right-radius(2px);
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+  @include border-bottom-left-radius(2px);
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+  @include border-bottom-right-radius(2px);
+}
+
+/* Overlays */
+.ui-widget-overlay {
+  @include opacity(0.7);
+  background: #262b33;
+}
+.ui-widget-shadow {
+  margin: -8px 0 0 -8px;
+  padding: 8px;
+  @include opacity(0.3);
+  background: #000000;
+  @include border-radius(8px);
+}
+
+/* Button */
+.ui-button {
+  @include transition(all, 0.25s, ease-in-out);
+}
+
+.ui-button-text-only .ui-button-text, input.ui-button {
+  font-size:.7em;
+  font-weight: bold;
+}
+
+input.ui-button {
+  padding: .5em 1em;
+}
+
+.ui-button.ui-state-hover { 
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+/* UI Tabs */
+.ui-tabs {
+  border: 0;
+}
+
+.ui-tabs .ui-tabs-nav {
+  margin: 0;
+  padding: 0;
+  @include border-radius(0);
+  background: transparent;
+  border-width: 0 0 1px 0;
+}
+
+.ui-tabs .ui-tabs-nav li {
+  top: 1px;
+  margin: 0 .2em 1px 0;
+  border-bottom: 0 !important;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+  padding: .5em 1em;
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.ui-tabs .ui-tabs-panel {
+  @include border-radius(0);
+}
+
+/* UI Autocomplete */
+.ui-autocomplete {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* UI Menu */
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+  background: #5f83b9;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 1px #234386;
+  border-color: #466086;
+  @include border-radius(0);
+}
+
+/* UI Dialog */
+.ui-dialog {
+  padding: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.ui-dialog .ui-dialog-titlebar {
+  border: none;
+  border-bottom: 1px solid #979797;
+  @include border-radius(0);
+}
+.ui-dialog .ui-dialog-title {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* UI Slider */
+.ui-slider {
+  background: #d7d7d7;
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5) inset;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5) inset;
+
+  .ui-slider-handle {
+    width: 23px;
+    height: 23px;
+    border: none;
+    outline: none;
+
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+
+    background-position:-92px -23px;
+    &.ui-state-hover { background-position:-138px -23px; }
+    &.ui-state-active { background-position:-161px -23px; }
+    &.ui-state-disabled { background-position:-207px -23px; }
+  }
+
+  .ui-slider-range {
+    background: #a3cae0;
+    -moz-box-shadow: 0 1px 2px rgba(17,35,45,0.6) inset;
+    -webkit-box-shadow: 0 1px 2px rgba(17,35,45,0.6) inset;
+  }
+}
+
+.ui-slider-horizontal {
+  height: 5px;
+  .ui-slider-handle {
+    top: -8px;
+    margin-left: -13px;
+  }
+}
+
+/* UI Progressbar */
+.ui-progressbar, .ui-progressbar .ui-progressbar-value {
+  background-image: inline-image("progress_bar.gif");
+  background-repeat: repeat-x;
+}
+
+.ui-progressbar {
+  height: 12px;
+  background-position: 0 -14px;
+  .ui-progressbar-value {
+    background-position: 0 0;
+  }
+}
+
+/* UI Tooltip */
+.ui-tooltip {
+  box-shadow: 0 0 5px #aaaaaa;
+}
+
+.sc-checkbox input[type="checkbox"], .ui-slider .ui-slider-handle {
+  background-image: inline-image("sprite-aristo.png");
+  background-repeat: no-repeat;
+}
+
+.sc-checkbox input[type="checkbox"] {
+  -khtml-appearance: none;
+  width: 23px;
+  height: 23px;
+
+  background-position:0 0;
+  &:hover { background-position:-46px 0; }
+  &:active { background-position:-69px 0; }
+  &:disabled { background-position:-184px 0; }
+
+  &:checked {
+    background-position:-92px 0;
+    &:hover { background-position:-138px 0; }
+    &:active { background-position:-161px 0; }
+    &:disabled { background-position:-207px 0; }
+  }
+}

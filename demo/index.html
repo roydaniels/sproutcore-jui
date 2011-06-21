@@ -1,0 +1,118 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]--> <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]--> <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]--> <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>SproutCore 2.0 and jQuery UI examples</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+  <script type="text/javascript" src="../pkg/sproutcore/sproutcore-2.0.beta.1.js"></script>
+
+  <link rel="stylesheet" href="../pkg/sproutcore-jui-aristo/sproutcore-jui-boilerplate-0.1.0.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="../pkg/sproutcore-jui-aristo/sproutcore-jui-aristo-0.1.0.css" type="text/css" media="screen" charset="utf-8">
+
+  <script type="text/javascript" src="../pkg/jquery-ui/jquery-ui.js"></script>
+  <script type="text/javascript" src="../pkg/sproutcore-jui-views/sproutcore-jui-views-0.1.0.js"></script>
+  <script type="text/javascript" src="../pkg/sproutcore-jui-core/sproutcore-jui-core-0.1.0.js"></script>
+  <script type="text/javascript" src="../pkg/sproutcore-jui-throbber/sproutcore-jui-throbber-0.1.0.js"></script>
+
+  <script type="text/javascript" src="js/app.js"></script>
+
+  <style type="text/css" media="screen">
+    body{ font: 85%; margin: 50px;}
+    input[type=text] { width: 300px; }
+    .ui-slider, .ui-progressbar, .ui-spinner, .sc-text-field {
+      width: 300px;
+      margin-bottom:5px;
+    }
+    .ui-sortable li { cursor: move; }
+    .ui-slider {
+      margin-top:10px;
+      margin-bottom:10px;
+    }
+    h1 {
+      font-size: 2em;
+    }
+    h2 {
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    .content {
+      padding:10px;
+      width:300px;
+    }
+    footer {
+      margin-top:50px;
+    }
+  </style>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <h1>SproutCore 2.0 and jQuery UI examples</h1>
+  
+  <script type="text/html">
+    <h2>Autocomplete and CollectionView:</h2>
+    {{view JUI.AutocompleteTextField target="Demo.tagsController" action="addTag" sourceBinding="Demo.sortableController.content"}}
+    {{#collection contentBinding="Demo.tagsController"}}
+      {{content.name}} {{view JUI.Button label="Remove" target="Demo.tagsController" action="removeTag"}}
+    {{/collection}}
+  
+    <h2>Datepicker:</h2>
+    {{view JUI.Datepicker}}
+
+    <h2>Buttons :</h2>
+    {{#view Demo.Buttons}}
+      <div id="divButton">&lt;DIV&gt; Button</div>
+      <a id="linkButton" href="#">&lt;A href="#"&gt; Button</a>
+      <button id="buttonButton">&lt;BUTTON&gt; Button</button>
+      <input id="submitButton" type="submit" value='&lt;INPUT type="submit"&gt; Button'/>
+      <input id="resetButton" type="reset" value='&lt;INPUT type="reset"&gt; Button'/>
+    {{/view}}
+
+    <h2>Dialog:</h2>
+    {{view JUI.Button label="Open Info Dialog" target="Demo.dialogsController" action="openInfoDialog"}}
+    {{view JUI.Button label="Open Error Dialog" target="Demo.dialogsController" action="openErrorDialog"}}
+    {{view JUI.Button label="Open Confirmation Dialog" target="Demo.dialogsController" action="openConfirmDialog"}}
+
+    <h2>Slider:</h2>
+    {{view Demo.StepSlider range="min" valueBinding="Demo.sliderController.value"}}
+    {{view Demo.StepSpinner valueBinding="Demo.sliderController.value"}}
+  
+    <h2>Progressbar:</h2>
+    {{view JUI.ProgressBar valueBinding="Demo.progressbarController.progress"}}
+    {{view SC.TextField valueBinding="Demo.progressbarController.progress"}}
+    {{view JUI.Slider valueBinding="Demo.progressbarController.progress"}}
+  
+    <h2>SortableCollectionView:</h2>
+    {{#collection JUI.SortableCollectionView contentBinding="Demo.sortableController" tagName="ol"}}
+      {{content}}
+    {{/collection}}
+
+    <h2>ResizableView:</h2>
+    {{#view JUI.ResizableView class="ui-widget-content content"}}
+      <div>
+        <p>There is content in here<p>
+      </div>
+    {{/view}}
+
+    <h2>Menu</h2>
+
+    <h2>Form Controls</h2>
+    {{view SC.Checkbox title="Disable"}}
+  </script>
+
+  <footer>
+    Source code viewable on <a href="https://github.com/tchak/sproutcore-jquery-ui">GitHub</a>
+  </footer>
+</body>
+</html>

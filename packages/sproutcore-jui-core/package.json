@@ -1,0 +1,19 @@
+{
+  "name": "sproutcore-jui-core",
+  "summary": "SproutCore JUI Core",
+  "description": "The SproutCore jQuery UI Widgets",
+  "homepage": "http://github.com/tchak/sproutcore-jui",
+  "author": "Paul Chavard",
+  "version": "0.1.0",
+  "dependencies": {
+    "sproutcore-jui-views": "0.1.0",
+    "sproutcore-preprocessor": "~> 0.0.2"
+  },
+  "plugin:preprocessors": [
+    "sproutcore-preprocessor/preprocessor"
+  ],
+  "directories": {
+    "lib"       : "./lib",
+    "tests"     : "./tests"
+  }
+}

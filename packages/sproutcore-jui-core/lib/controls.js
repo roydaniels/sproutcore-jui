@@ -1,0 +1,10 @@
+require("controls/button");
+require("controls/slider");
+require("controls/spinner");
+require("controls/progressbar");
+require("controls/menu");
+require("controls/dialog");
+require("controls/datepicker");
+require("controls/tooltip");
+require("controls/sortable");
+require("controls/resizable");

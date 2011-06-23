@@ -4,7 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-require("./mixins/widget");
-require("./mixins/target_support");
-require("./controls/button");
-require("./controls/menu");
+require("jquery-ui/autocomplete-html");
+require("jquery-ui/dialog-resizable");
+require("mixins/widget");
+require("mixins/target_support");
+require("controls");

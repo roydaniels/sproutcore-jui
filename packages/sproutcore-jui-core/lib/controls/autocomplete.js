@@ -2,7 +2,7 @@
  * JUI.AutocompleteTextField
  */
 
-JUI.AutocompleteTextField = JUI.TextField.extend(SC.TargetSupport, {
+JUI.AutocompleteTextField = SC.TextField.extend(JUI.Widget, JUI.TargetSupport, {
   uiType: 'autocomplete',
   uiOptions: ['source', 'delay', 'position', 'minLength', 'html'],
   uiEvents: ['select', 'focus', 'open', 'close'],

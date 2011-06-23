@@ -15,11 +15,11 @@ JUI.Widget = SC.Mixin.create({
     return jQuery.ui[this.get('uiType')];
   }.property().cacheable(),
 
-  willInsertElement: function() {
+  didInsertElement: function() {
     var options = this._gatherOptions();
     this._gatherEvents(options);
 
-    var ui = get(this, 'uiWidget')(options, this._findElement());
+    var ui = get(this, 'uiWidget')(options, get(this, 'element'));
     set(this, 'ui', ui);
 
     this._defineMethods();
@@ -43,16 +43,6 @@ JUI.Widget = SC.Mixin.create({
   uiEvents: [],
   uiOptions: [],
   uiMethods: [],
-
-  _findElement: function() {
-    var elem = get(this, 'uiElement');
-    if (elem) {
-      elem = this.$(elem);
-    } else {
-      elem = get(this, 'element');
-    }
-    return elem;
-  },
 
   _gatherEvents: function(options) {
     var uiEvents = get(this, 'uiEvents');
@@ -108,14 +98,6 @@ JUI.Widget = SC.Mixin.create({
       };
     }, this);
   }
-});
-
-/*
- * JUI.TextField
- */
-
-JUI.TextField = SC.TextField.extend(JUI.Widget, {
-  uiElement: 'input'
 });
 
 })();

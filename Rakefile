@@ -3,27 +3,24 @@ require 'sass'
 require 'compass'
 
 PACKAGES = {
-  :views => [
-    'support',
-    'textfield',
-    'select'
-  ],
   :core => [
     'jquery-ui/autocomplete-html',
     'jquery-ui/dialog-resizable',
-    'widget',
-    'widgets/controls',
-    'widgets/menu',
-    'widgets/autocomplete',
-    'widgets/sortable',
-    'widgets/dialog',
-    'widgets/datepicker',
-    'widgets/resizable',
-    'widgets/tooltip'
+    'mixins/widget',
+    'mixins/target_support',
+    'controls/controls',
+    'controls/menu',
+    'controls/autocomplete',
+    'controls/sortable',
+    'controls/dialog',
+    'controls/datepicker',
+    'controls/resizable',
+    'controls/tooltip',
+    'views/select'
   ],
   :throbber => [
     'jquery-ui/throbber',
-    'throbber'
+    'views/throbber'
   ]
 }
 
@@ -35,22 +32,10 @@ task :default => 'jui:build'
 
 namespace :jui do
   desc "Build all packages"
-  task :build => ['jui:views:build', 'jui:core:build', 'jui:throbber:build', 'jui:aristo:build']
+  task :build => ['jui:core:build', 'jui:throbber:build', 'jui:aristo:build']
 
   desc "Clean all packages"
-  task :clean => ['jui:views:clean', 'jui:core:clean', 'jui:throbber:clean', 'jui:aristo:clean']
-
-  namespace :views do
-    desc "Build views"
-    task :build => [:clean] do
-      build_package :views
-    end
-
-    desc "Clean views"
-    task :clean do
-      rm_rf "#{DIST_DIR}/#{NAMESPACE}-views"
-    end
-  end
+  task :clean => ['jui:core:clean', 'jui:throbber:clean', 'jui:aristo:clean']
 
   namespace :core do
     desc "Build core"

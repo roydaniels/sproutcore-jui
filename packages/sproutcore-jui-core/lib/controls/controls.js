@@ -47,7 +47,7 @@ JUI.ProgressBar = SC.View.extend(JUI.Widget, {
  * JUI.Spinner
  */
 
-JUI.Spinner = JUI.TextField.extend({
+JUI.Spinner = SC.TextField.extend(JUI.Widget, {
   uiType: 'spinner',
   uiOptions: ['value', 'min', 'max', 'step'],
   uiEvents: ['spin', 'start', 'stop'],

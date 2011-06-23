@@ -7,7 +7,7 @@ var get = SC.get, set = SC.set;
 
 JUI.Tooltip = SC.Mixin.create({
   tooltip: '',
-  hasTooltip: NO,
+  hasTooltip: false,
 
   // @private
   toggleTooltip: function() {

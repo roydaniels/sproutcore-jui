@@ -5,7 +5,7 @@ var get = SC.get, set = SC.set;
  * JUI.Dialog
  */
 
-JUI.Dialog = SC.View.extend(JUI.Widget, SC.TargetSupport, {
+JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
   uiType: 'dialog',
   uiEvents: ['beforeClose'],
   uiOptions: ['title', '_buttons', 'position', 'closeOnEscape',
@@ -13,7 +13,7 @@ JUI.Dialog = SC.View.extend(JUI.Widget, SC.TargetSupport, {
     'width', 'height', 'maxWidth', 'maxHeight', 'minWidth', 'minHeight'],
   uiMethods: ['open', 'close'],
 
-  isOpen: NO,
+  isOpen: false,
 
   message: '',
   icon: null,
@@ -62,12 +62,12 @@ JUI.Dialog = SC.View.extend(JUI.Widget, SC.TargetSupport, {
   }.property('buttons').cacheable(),
 
   _open: function() {
-    set(this, 'isOpen', YES);
+    set(this, 'isOpen', true);
     this.didOpenDialog();
   },
 
   _close: function() {
-    set(this, 'isOpen', NO);
+    set(this, 'isOpen', false);
     this.didCloseDialog();
   },
 
@@ -77,6 +77,7 @@ JUI.Dialog = SC.View.extend(JUI.Widget, SC.TargetSupport, {
   },
 
   didInsertElement: function() {
+    this._super();
     get(this, 'ui')._bind({
       dialogopen: $.proxy(this._open, this),
       dialogclose: $.proxy(this._close, this)
@@ -96,9 +97,9 @@ var alertDialog, confirmDialog;
 
 JUI.AlertDialog = JUI.Dialog.extend({
   buttons: [{label: 'OK', action: 'close'}],
-  resizable: NO,
-  draggable: NO,
-  modal: YES
+  resizable: false,
+  draggable: false,
+  modal: true
 });
 
 JUI.AlertDialog.open = function(message, title, type) {
@@ -124,14 +125,14 @@ JUI.ConfirmDialog = JUI.AlertDialog.extend({
     {label: 'YES', action: 'didConfirm'},
     {label: 'NO', action: 'close'}
   ],
-  response: NO,
+  response: false,
   didConfirm: function() {
-    set(this, 'response', YES);
+    set(this, 'response', true);
     this.close();
   },
   didCloseDialog: function() {
     this.executeAction(get(this, 'action'), get(this, 'response'));
-    set(this, 'response', NO);
+    set(this, 'response', false);
   }
 });
 
@@ -152,9 +153,5 @@ JUI.ConfirmDialog.open = function(message, title) {
   set(confirmDialog, 'message', message);
   confirmDialog.open();
 };
-
-// SC.$(document).ready(function() {
-//   $('body').append('<div id="sc-dialogs" style="visibility:hidden;width:1px;height:1px;opacity:0;"></div>')
-// });
 
 })();

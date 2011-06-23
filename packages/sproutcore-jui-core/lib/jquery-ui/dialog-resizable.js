@@ -13,7 +13,7 @@ $( window ).resize(function() {
     $( ".ui-dialog-content:visible" ).each(function() {
         var dialog = $( this ).data( "dialog" );
         if ( dialog.options.autoReposition ) {
-            dialog.option( "position", dialog.options.position );
+            //dialog.option( "position", dialog.options.position );
         }
     });
 });

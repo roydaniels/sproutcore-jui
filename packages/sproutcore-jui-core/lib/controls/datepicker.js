@@ -5,7 +5,7 @@ var get = SC.get, set = SC.set;
  * JUI.Datepicker
  */
 
-JUI.Datepicker = JUI.TextField.extend({
+JUI.Datepicker = SC.TextField.extend(JUI.Widget, {
   uiType: 'datepicker',
   uiOptions: ['dateFormat', 'maxDate', 'minDate', 'defaultDate'],
   uiEvents: ['onSelect'],

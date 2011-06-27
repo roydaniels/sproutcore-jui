@@ -9,6 +9,7 @@ PACKAGES = {
     'mixins/widget',
     'mixins/target_support',
     'controls/controls',
+    'controls/button',
     'controls/menu',
     'controls/autocomplete',
     'controls/sortable',

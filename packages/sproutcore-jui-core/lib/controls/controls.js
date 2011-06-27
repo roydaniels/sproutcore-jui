@@ -2,17 +2,6 @@
 var get = SC.get, set = SC.set;
 
 /*
- * JUI.Button
- */
-
-JUI.Button = SC.Button.extend(JUI.Widget, {
-  uiType: 'button',
-  uiOptions: ['label'],
-
-  isActiveBinding: SC.Binding.oneWay('.disabled')
-});
-
-/*
  * JUI.Slider
  */
 
@@ -36,8 +25,8 @@ JUI.ProgressBar = SC.View.extend(JUI.Widget, {
   uiEvents: ['change', 'complete'],
 
   _value: function(key, value) {
-    if (value !== null && value !== undefined) {
-      set(this, 'value', parseInt(value));
+    if (value !== undefined) {
+      set(this, 'value', value);
     }
     return get(this, 'value');
   }.property('value').cacheable()

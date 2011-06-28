@@ -14,9 +14,6 @@ JUI.AutocompleteTextField = SC.TextField.extend(JUI.Widget, JUI.TargetSupport, {
       this.executeAction(get(this, 'action'), ui.item.value);
       event.target.value = '';
       event.preventDefault();
-      this.didSelectValue();
     }
-  },
-
-  didSelectValue: SC.K
+  }
 });

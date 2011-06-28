@@ -11,10 +11,7 @@ JUI.Slider = SC.View.extend(JUI.Widget, {
 
   slide: function(event, ui) {
     set(this, 'value', ui.value);
-    this.didSlideToValue();
-  },
-
-  didSlideToValue: SC.K
+  }
 });
 
 /*
@@ -46,8 +43,5 @@ JUI.Spinner = SC.TextField.extend(JUI.Widget, {
 
   spin: function(event, ui) {
     set(this, 'value', ui.value);
-    this.didSpinToValue();
-  },
-
-  didSpinToValue: SC.K
+  }
 });

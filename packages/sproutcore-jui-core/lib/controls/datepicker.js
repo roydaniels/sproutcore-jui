@@ -36,7 +36,7 @@ JUI.Datepicker = SC.TextField.extend(JUI.Widget, {
 
   // @private
   onSelect: function(dateText, ui) {
-    this.select.call(this, dateText, ui);
+    this.select();
   },
 
   select: SC.K

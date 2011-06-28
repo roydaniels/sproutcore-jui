@@ -4,7 +4,7 @@
  * http://github.com/tchak/sproutcore-jquery-ui
  */
 
-var get = SC.get, set = SC.set;
+var get = SC.get, set = SC.set, none = SC.none;
 
 JUI = SC.Object.create();
 
@@ -66,7 +66,7 @@ JUI.Widget = SC.Mixin.create({
     uiOptions.forEach(function(key) {
       var value = get(this, key),
           uiKey = key.replace(/^_/, '');
-      if (typeof value != 'undefined') {
+      if (!none(value)) {
         options[uiKey] = value;
       } else {
         set(this, key, defaultOptions[uiKey]);
@@ -93,7 +93,7 @@ JUI.Widget = SC.Mixin.create({
         ui = get(this, 'ui');
     uiMethods.forEach(function(methodName) {
       this[methodName] = function() {
-        ui[methodName]();
+        return ui[methodName]();
       };
     }, this);
   }

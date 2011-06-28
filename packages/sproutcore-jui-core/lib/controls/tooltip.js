@@ -1,4 +1,3 @@
-(function() {
 var get = SC.get, set = SC.set;
 
 /*
@@ -29,5 +28,3 @@ JUI.Tooltip = SC.Mixin.create({
   }.property('tooltip').cacheable()
 
 });
-
-})();

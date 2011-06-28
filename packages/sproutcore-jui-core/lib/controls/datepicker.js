@@ -1,5 +1,4 @@
-(function() {
-var get = SC.get, set = SC.set;
+var get = SC.get, set = SC.set, none = SC.none;
 
 /*
  * JUI.Datepicker
@@ -12,7 +11,7 @@ JUI.Datepicker = SC.TextField.extend(JUI.Widget, {
 
   date: function(key, value) {
     var ui = get(this, 'ui');
-    if (value != undefined) {
+    if (!none(value)) {
       ui.setDate(value);
     }
     return ui.getDate();
@@ -29,9 +28,9 @@ JUI.Datepicker = SC.TextField.extend(JUI.Widget, {
   // @private
   uiWidget: function() {
     var datepicker = function(options, elem) {
-      return $(elem).datepicker(options).datepicker('widget');
+      return SC.$(elem).datepicker(options).datepicker('widget');
     };
-    datepicker.prototype.options = $.datepicker._defaults;
+    datepicker.prototype.options = SC.$.datepicker._defaults;
     return datepicker;
   }.property().cacheable(),
 
@@ -43,7 +42,5 @@ JUI.Datepicker = SC.TextField.extend(JUI.Widget, {
   select: SC.K
 });
 
-JUI.Datepicker.formatDate = $.datepicker.formatDate;
-JUI.Datepicker.parseDate = $.datepicker.parseDate;
-
-})();
+JUI.Datepicker.formatDate = SC.$.datepicker.formatDate;
+JUI.Datepicker.parseDate = SC.$.datepicker.parseDate;

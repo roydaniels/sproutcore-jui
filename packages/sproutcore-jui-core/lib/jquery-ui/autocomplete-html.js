@@ -6,21 +6,20 @@
  *
  * http://github.com/scottgonzalez/jquery-ui-extensions
  */
-(function( $ ) {
 
-var proto = $.ui.autocomplete.prototype,
+var proto = jQuery.ui.autocomplete.prototype,
   initSource = proto._initSource;
 
 function filter( array, term ) {
-  var matcher = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
-  return $.grep( array, function(value) {
-    return matcher.test( $( "<div>" ).html( value.label || value.value || value ).text() );
+  var matcher = new RegExp( jQuery.ui.autocomplete.escapeRegex(term), 'i');
+  return jQuery.grep( array, function(value) {
+    return matcher.test(jQuery('<div>').html( value.label || value.value || value ).text());
   });
 }
 
-$.extend( proto, {
+jQuery.extend( proto, {
   _initSource: function() {
-    if ( this.options.html && $.isArray(this.options.source) ) {
+    if ( this.options.html && jQuery.isArray(this.options.source) ) {
       this.source = function( request, response ) {
         response( filter( this.options.source, request.term ) );
       };
@@ -30,11 +29,9 @@ $.extend( proto, {
   },
 
   _renderItem: function( ul, item) {
-    return $( "<li></li>" )
-      .data( "item.autocomplete", item )
-      .append( $( "<a></a>" )[ this.options.html ? "html" : "text" ]( item.label ) )
+    return jQuery('<li></li>')
+      .data('item.autocomplete', item)
+      .append(jQuery( "<a></a>" )[ this.options.html ? "html" : "text" ]( item.label ))
       .appendTo( ul );
   }
 });
-
-})( jQuery );

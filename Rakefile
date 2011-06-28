@@ -86,7 +86,9 @@ def build_package name
   package_name = "#{NAMESPACE}-#{name}"
   base_path = "packages/#{package_name}/lib"
   PACKAGES[name].each do |file|
-    content += File.read(File.join(base_path, "#{file}.js")) + "\n"
+    content += "(function(){\n\n"
+    content += File.read(File.join(base_path, "#{file}.js")) + "\n\n"
+    content += "})();\n\n"
   end
 
   mkpath_if_do_not_exists "#{DIST_DIR}/#{package_name}"

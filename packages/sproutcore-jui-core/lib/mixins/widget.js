@@ -4,7 +4,6 @@
  * http://github.com/tchak/sproutcore-jquery-ui
  */
 
-(function() {
 var get = SC.get, set = SC.set;
 
 JUI = SC.Object.create();
@@ -99,5 +98,3 @@ JUI.Widget = SC.Mixin.create({
     }, this);
   }
 });
-
-})();

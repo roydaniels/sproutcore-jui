@@ -1,4 +1,3 @@
-(function() {
 var get = SC.get, set = SC.set;
 
 /*
@@ -49,5 +48,3 @@ JUI.SortableCollectionView = SC.CollectionView.extend(JUI.Widget, {
     }
   }
 });
-
-})();

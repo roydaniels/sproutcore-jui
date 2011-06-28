@@ -1,4 +1,3 @@
-(function() {
 var get = SC.get, set = SC.set;
 
 /*
@@ -153,5 +152,3 @@ JUI.ConfirmDialog.open = function(message, title) {
   set(confirmDialog, 'message', message);
   confirmDialog.open();
 };
-
-})();

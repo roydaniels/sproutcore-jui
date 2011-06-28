@@ -1,3 +1,5 @@
+var get = SC.get;
+
 /*
  * JUI.AutocompleteTextField
  */
@@ -9,9 +11,12 @@ JUI.AutocompleteTextField = SC.TextField.extend(JUI.Widget, JUI.TargetSupport, {
 
   select: function(event, ui) {
     if (ui.item) {
-      this.executeAction(SC.get(this, 'action'), ui.item.value);
+      this.executeAction(get(this, 'action'), ui.item.value);
       event.target.value = '';
       event.preventDefault();
+      this.didSelectValue();
     }
-  }
+  },
+
+  didSelectValue: SC.K
 });

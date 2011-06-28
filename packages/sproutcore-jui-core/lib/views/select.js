@@ -1,5 +1,3 @@
-(function() {
-
 var get = SC.get, set = SC.set, getPath = SC.getPath;
 
 SC.Option = SC.View.extend({
@@ -72,6 +70,3 @@ SC.Select = SC.CollectionView.extend({
   }
 
 });
-
-})();
-

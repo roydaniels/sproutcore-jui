@@ -1,5 +1,4 @@
-(function() {
-var get = SC.get, set = SC.set;
+var get = SC.get, set = SC.set, none = SC.none;
 
 /*
  * JUI.Slider
@@ -12,7 +11,10 @@ JUI.Slider = SC.View.extend(JUI.Widget, {
 
   slide: function(event, ui) {
     set(this, 'value', ui.value);
-  }
+    this.didSlideToValue();
+  },
+
+  didSlideToValue: SC.K
 });
 
 /*
@@ -25,10 +27,10 @@ JUI.ProgressBar = SC.View.extend(JUI.Widget, {
   uiEvents: ['change', 'complete'],
 
   _value: function(key, value) {
-    if (value !== undefined) {
-      set(this, 'value', value);
+    if (!none(value)) {
+      set(this, 'value', parseInt(value));
     }
-    return get(this, 'value');
+    return parseInt(get(this, 'value'));
   }.property('value').cacheable()
 });
 
@@ -44,7 +46,8 @@ JUI.Spinner = SC.TextField.extend(JUI.Widget, {
 
   spin: function(event, ui) {
     set(this, 'value', ui.value);
-  }
-});
+    this.didSpinToValue();
+  },
 
-})();
+  didSpinToValue: SC.K
+});

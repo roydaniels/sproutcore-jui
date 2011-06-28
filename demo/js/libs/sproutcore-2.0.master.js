@@ -2450,7 +2450,7 @@ var WATCHED_DESC = {
 
 function w_get(obj, keyName) {
   var m = meta(obj, false);
-  return (m.source===obj) && m.values[keyName];
+  return m.values ? m.values[keyName] : undefined;
 }
 
 function w_set(obj, keyName, value) {
@@ -7051,19 +7051,19 @@ function makeCtor() {
   // Note: avoid accessing any properties on the object since it makes the
   // method a lot faster.  This is glue code so we want it to be as fast as
   // possible.
-  
+
   var isPrepared = false, initMixins, init = false, hasChains = false;
-  
+
   var Class = function() {
-    if (!isPrepared) get(Class, 'proto'); // prepare prototype...
+    if (!isPrepared) { get(Class, 'proto'); } // prepare prototype...
     if (initMixins) {
       this.reopen.apply(this, initMixins);
       initMixins = null;
       rewatch(this); // ålways rewatch just in case
       this.init.apply(this, arguments);
     } else {
-      if (hasChains) rewatch(this);
-      if (init===false) init = this.init; // cache for later instantiations
+      if (hasChains) { rewatch(this); }
+      if (init===false) { init = this.init; } // cache for later instantiations
       init.apply(this, arguments);
     }
   };
@@ -7076,37 +7076,37 @@ function makeCtor() {
     if (!isPrepared) {
       isPrepared = true;
       Class.PrototypeMixin.applyPartial(Class.prototype);
-      hasChains = !!meta(Class.prototype, false).chains; // avoid rewatch 
+      hasChains = !!meta(Class.prototype, false).chains; // avoid rewatch
     }
     return this.prototype;
   }));
-  
+
   return Class;
-  
+
 }
 
-var Object = makeCtor();
+var CoreObject = makeCtor();
 
-Object.PrototypeMixin = SC.Mixin.create({
-  
+CoreObject.PrototypeMixin = SC.Mixin.create({
+
   reopen: function() {
     SC.Mixin._apply(this, arguments, true);
     return this;
   },
 
   isInstance: true,
-  
+
   init: function() {},
-  
+
   isDestroyed: false,
-  
+
   destroy: function() {
     set(this, 'isDestroyed', true);
-    return this;  
+    return this;
   },
-  
+
   bind: function(to, from) {
-    if (!(from instanceof SC.Binding)) from = SC.Binding.from(from);
+    if (!(from instanceof SC.Binding)) { from = SC.Binding.from(from); }
     from.to(to).connect(this);
     return from;
   },
@@ -7116,26 +7116,26 @@ Object.PrototypeMixin = SC.Mixin.create({
   }
 });
 
-Object.__super__ = null;
+CoreObject.__super__ = null;
 
 var ClassMixin = SC.Mixin.create({
-    
+
   ClassMixin: SC.required(),
-  
+
   PrototypeMixin: SC.required(),
 
   isClass: true,
-  
+
   isMethod: false,
-  
+
   extend: function() {
     var Class = makeCtor(), proto;
     Class.ClassMixin = SC.Mixin.create(this.ClassMixin);
     Class.PrototypeMixin = SC.Mixin.create(this.PrototypeMixin);
-    
+
     var PrototypeMixin = Class.PrototypeMixin;
     PrototypeMixin.reopen.apply(PrototypeMixin, arguments);
-    
+
     Class.superclass = this;
     Class.__super__  = this.prototype;
 
@@ -7144,50 +7144,50 @@ var ClassMixin = SC.Mixin.create({
     SC.generateGuid(proto, 'sc');
     meta(proto).proto = proto; // this will disable observers on prototype
     SC.rewatch(proto); // setup watch chains if needed.
-    
+
 
     Class.subclasses = SC.Set ? new SC.Set() : null;
-    if (this.subclasses) this.subclasses.add(Class);
-    
+    if (this.subclasses) { this.subclasses.add(Class); }
+
     Class.ClassMixin.apply(Class);
     return Class;
   },
-  
+
   create: function() {
     var C = this;
-    if (arguments.length>0) this._initMixins(arguments);
+    if (arguments.length>0) { this._initMixins(arguments); }
     return new C();
   },
-  
+
   reopen: function() {
     var PrototypeMixin = this.PrototypeMixin;
     PrototypeMixin.reopen.apply(PrototypeMixin, arguments);
     this._prototypeMixinDidChange();
     return this;
   },
-  
+
   reopenClass: function() {
     var ClassMixin = this.ClassMixin;
     ClassMixin.reopen.apply(ClassMixin, arguments);
     SC.Mixin._apply(this, arguments, false);
     return this;
   },
-  
+
   detect: function(obj) {
-    if ('function' !== typeof obj) return false;
+    if ('function' !== typeof obj) { return false; }
     while(obj) {
-      if (obj===this) return true;
+      if (obj===this) { return true; }
       obj = obj.superclass;
     }
     return false;
   }
-  
+
 });
 
-Object.ClassMixin = ClassMixin;
-ClassMixin.apply(Object);
+CoreObject.ClassMixin = ClassMixin;
+ClassMixin.apply(CoreObject);
 
-SC.CoreObject = Object;
+SC.CoreObject = CoreObject;
 
 
 
@@ -9442,17 +9442,19 @@ if (SC.EXTEND_PROTOTYPES) SC.NativeArray.activate();
 
 var get = SC.get, set = SC.set;
 
-/*
-  TODO Document SC.RenderBuffer class itself
-*/
-
 /**
   @class
+
+  SC.RenderBuffer gathers information regarding the a view and generates the 
+  final representation. SC.RenderBuffer will generate HTML which can be pushed
+  to the DOM.
+
   @extends SC.Object
 */
 SC.RenderBuffer = function(tagName) {
   return SC._RenderBuffer.create({
-    elementTag: tagName
+    elementTag: tagName,
+    elementMap: {}
   });
 };
 
@@ -9460,36 +9462,74 @@ SC._RenderBuffer = SC.Object.extend(
 /** @scope SC.RenderBuffer.prototype */ {
 
   /**
+    Array of class-names which will be applied in the class="" attribute
+
+    You should not maintain this array yourself, rather, you should use
+    the addClass() method of SC.RenderBuffer.
+    
     @type Array
     @default []
   */
   elementClasses: null,
 
   /**
+    The id in of the element, to be applied in the id="" attribute
+
+    You should not set this property yourself, rather, you should use
+    the id() method of SC.RenderBuffer.
+    
     @type String
     @default null
   */
   elementId: null,
 
   /**
+    A hash keyed on the name of the attribute and whose value will be 
+    applied to that attribute. For example, if you wanted to apply a 
+    data-view="Foo.bar" property to an element, you would set the 
+    elementAttributes hash to {'data-view':'Foo.bar'}
+
+    You should not maintain this hash yourself, rather, you should use
+    the attr() method of SC.RenderBuffer.
+    
     @type Hash
     @default {}
   */
   elementAttributes: null,
 
   /**
+    An array of strings which defines the body of the element.
+
+    You should not maintain this array yourself, rather, you should use
+    the push() method of SC.RenderBuffer.
+
     @type Array
     @default []
   */
   elementContent: null,
 
   /**
+    The tagname of the element an instance of SC.RenderBuffer represents.
+    
+    Usually, this gets set as the first parameter to SC.RenderBuffer. For
+    example, if you wanted to create a `p` tag, then you would call
+    
+      SC.RenderBuffer('p')  
+
     @type String
     @default null
   */
   elementTag: null,
 
   /**
+    A hash keyed on the name of the style attribute and whose value will 
+    be applied to that attribute. For example, if you wanted to apply a 
+    background-color:black;" style to an element, you would set the 
+    elementStyle hash to {'background-color':'black'}
+
+    You should not maintain this hash yourself, rather, you should use
+    the style() method of SC.RenderBuffer.
+
     @type Hash
     @default {}
   */
@@ -9509,11 +9549,24 @@ SC._RenderBuffer = SC.Object.extend(
   escapeContent: false,
 
   /**
+    If escapeContent is set to true, escapeFunction will be called
+    to escape the content. Set this property to a function that
+    takes a content string as its parameter, and return a sanitized
+    string.
+    
     @type Function
     @see SC.RenderBuffer.prototype.escapeContent
   */
   escapeFunction: null,
 
+  elementMap: null,
+
+  /**
+    Nested RenderBuffers will set this to their parent RenderBuffer
+    instance.
+ 
+    @type SC._RenderBuffer
+  */
   parentBuffer: null,
 
   /** @private */
@@ -9524,6 +9577,8 @@ SC._RenderBuffer = SC.Object.extend(
     set(this, 'elementAttributes', {});
     set(this, 'elementStyle', {});
     set(this, 'elementContent', []);
+    set(this, 'childBuffers', []);
+    set(this, 'elements', {});
   },
 
   /**
@@ -9533,7 +9588,7 @@ SC._RenderBuffer = SC.Object.extend(
     @returns {SC.RenderBuffer} this
   */
   push: function(string) {
-    get(this, 'elementContent').pushObject(string);
+    get(this, 'childBuffers').pushObject(string);
     return this;
   },
 
@@ -9583,6 +9638,19 @@ SC._RenderBuffer = SC.Object.extend(
     return this;
   },
 
+  newBuffer: function(tagName, parent, fn, other) {
+    var buffer = SC._RenderBuffer.create({
+      parentBuffer: parent,
+      elementTag: tagName,
+      elementMap: get(this, 'elementMap')
+    });
+
+    if (other) { buffer.setProperties(other); }
+    if (fn) { fn.call(this, buffer); }
+
+    return buffer;
+  },
+
   /**
     Creates a new SC.RenderBuffer object with the provided tagName as
     the element tag and with its parentBuffer property set to the current
@@ -9592,9 +9660,32 @@ SC._RenderBuffer = SC.Object.extend(
     @returns {SC.RenderBuffer} A new RenderBuffer object
   */
   begin: function(tagName) {
-    return SC._RenderBuffer.create({
-      parentBuffer: this,
-      elementTag: tagName
+    return this.newBuffer(tagName, this, function(buffer) {
+      get(this, 'childBuffers').pushObject(buffer);
+    });
+  },
+
+  prepend: function(tagName) {
+    return this.newBuffer(tagName, this, function(buffer) {
+      get(this, 'childBuffers').insertAt(0, buffer);
+    });
+  },
+
+  replaceWith: function(tagName) {
+    var parentBuffer = get(this, 'parentBuffer');
+
+    return this.newBuffer(tagName, parentBuffer, function(buffer) {
+      this.replaceWithBuffer(buffer);
+    });
+  },
+
+  insertAfter: function(tagName) {
+    var parentBuffer = get(this, 'parentBuffer');
+
+    return this.newBuffer(tagName, parentBuffer, function(buffer) {
+      var siblings = get(parentBuffer, 'childBuffers');
+      var index = siblings.indexOf(this);
+      siblings.insertAt(index + 1, buffer);
     });
   },
 
@@ -9605,14 +9696,33 @@ SC._RenderBuffer = SC.Object.extend(
   */
   end: function() {
     var parent = get(this, 'parentBuffer');
+    var elementMap = get(this, 'elementMap'), elementId = get(this, 'elementId');
 
-    if (parent) {
-      var string = this.string();
-      parent.push(string);
-      return parent;
+    elementMap[elementId] = this;
+
+    return parent || this;
+  },
+
+  remove: function() {
+    this.replaceWithBuffer(null);
+  },
+
+  replaceWithBuffer: function(newBuffer) {
+    var elementMap = get(this, 'elementMap');
+    delete elementMap[get(this, 'elementId')];
+
+    var parent = get(this, 'parentBuffer');
+    var childBuffers = get(parent, 'childBuffers');
+
+    var index = childBuffers.indexOf(this);
+
+    if (newBuffer) {
+      childBuffers.splice(index, 1, newBuffer);
     } else {
-      return this;
+      childBuffers.splice(index, 1);
     }
+
+    return index;
   },
 
   /**
@@ -9665,6 +9775,13 @@ SC._RenderBuffer = SC.Object.extend(
     if (get(this, 'escapeContent')) {
       content = get(this, 'escapeFunction')(content);
     }
+
+    var childBuffers = get(this, 'childBuffers');
+
+    childBuffers.forEach(function(buffer) {
+      var stringy = typeof buffer === 'string';
+      content = content + (stringy ? buffer : buffer.string());
+    });
 
     return openTag + content + "</" + tag + ">";
   }
@@ -10164,7 +10281,7 @@ SC.View = SC.Object.extend(
   */
   _applyAttributeBindings: function(buffer) {
     var attributeBindings = get(this, 'attributeBindings'),
-        attributeValue, elem;
+        attributeValue, elem, type;
 
     if (!attributeBindings) { return; }
 
@@ -10175,10 +10292,11 @@ SC.View = SC.Object.extend(
         elem = this.$();
         var currentValue = elem.attr(attribute);
         attributeValue = get(this, attribute);
+        type = typeof attributeValue;
 
-        if ((typeof attributeValue === 'string' || typeof attributeValue === 'number') && attributeValue !== currentValue) {
+        if ((type === 'string' || type === 'number') && attributeValue !== currentValue) {
           elem.attr(attribute, attributeValue);
-        } else if (attributeValue && typeof attributeValue === 'boolean') {
+        } else if (attributeValue && type === 'boolean') {
           elem.attr(attribute, attribute);
         } else {
           elem.removeAttr(attribute);
@@ -10190,9 +10308,11 @@ SC.View = SC.Object.extend(
       // Determine the current value and add it to the render buffer
       // if necessary.
       attributeValue = get(this, attribute);
-      if (typeof attributeValue === 'string' || typeof attributeValue === 'number') {
+      type = typeof attributeValue;
+
+      if (type === 'string' || type === 'number') {
         buffer.attr(attribute, attributeValue);
-      } else if (attributeValue && typeof attributeValue === 'boolean') {
+      } else if (attributeValue && type === 'boolean') {
         // Apply boolean attributes in the form attribute="attribute"
         buffer.attr(attribute, attribute);
       }
@@ -10544,7 +10664,7 @@ SC.View = SC.Object.extend(
   },
 
   /** @private (nodoc) */
-  _sccv_elementWillChange: function() {
+  _elementWillChange: function() {
     this.forEachChildView(function(view) {
       SC.propertyWillChange(view, 'element');
     });
@@ -10559,7 +10679,7 @@ SC.View = SC.Object.extend(
 
     @observes element
   */
-  _sccv_elementDidChange: function() {
+  _elementDidChange: function() {
     this.forEachChildView(function(view) {
       SC.propertyDidChange(view, 'element');
     });

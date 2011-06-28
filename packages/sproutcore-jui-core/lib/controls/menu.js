@@ -1,3 +1,5 @@
+var get = SC.get;
+
 /*
  * JUI.Menu
  */
@@ -11,7 +13,7 @@ JUI.Menu = SC.CollectionView.extend(JUI.Widget, {
   arrayDidChange: function(content, start, removed, added) {
     this._super(content, start, removed, added);
 
-    var ui = SC.get(this, 'ui');
+    var ui = get(this, 'ui');
     if (ui) { ui.refresh(); }
   }
 });

@@ -13,8 +13,7 @@
 @import "compass/css3/images";
 @import "compass/css3/appearance";
 
-@import "jquery-ui/jquery.ui.base";
-@import "icons";
+@import "jquery-ui";
 
 $default-border-color: #a7a7a7;
 $hover-border-color: #456ec8;
@@ -120,7 +119,7 @@ $disabled-color: #c7c7c7;
   }
 }
 .ui-state-focus.ui-state-active, .ui-widget-content .ui-state-focus.ui-state-active, .ui-widget-header .ui-state-focus.ui-state-active {
-  @include background-image($focus-active-gradient);
+  //@include background-image($focus-active-gradient);
 }
 
 .ui-widget :active { outline: none; }
@@ -362,7 +361,7 @@ input.ui-button {
   }
 }
 
-.sc-text-field textarea, .sc-text-field input {
+textarea.sc-text-area, input.sc-text-field {
   border: 1px solid $default-border-color;
   outline: none;
   @include border-radius(2px);
@@ -370,11 +369,11 @@ input.ui-button {
   @include transition(all, 0.15s, ease-in-out);
 }
 
-.sc-text-field textarea:hover, .sc-text-field input:hover {
+textarea.sc-text-area:hover, input.sc-text-field:hover {
   @include box-shadow(rgba(0, 0, 0, 0.2) 0 1px 3px inset, rgba(255, 255, 255, 0.2) 0 1px 0);
 }
 
-.sc-text-field textarea:focus, .sc-text-field input:focus {
+textarea.sc-text-area:focus, input.sc-text-field:focus {
   border: 1px solid #95bdd4;
   @include box-shadow($highlight-color 0 1px 2px inset, rgba(255, 255, 255, 0.2) 0 1px 0);
 }

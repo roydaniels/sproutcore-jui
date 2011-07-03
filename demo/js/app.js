@@ -99,4 +99,10 @@ Demo.Buttons = SC.View.extend({
   didInsertElement: function() {
     this.$('div, a, button, input').button();
   }
+});
+
+Demo.Tabs = SC.View.extend({
+  didInsertElement: function() {
+    this.$().tabs();
+  }
 })

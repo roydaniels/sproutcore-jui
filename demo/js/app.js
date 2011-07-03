@@ -60,11 +60,11 @@ Demo.dialogsController = SC.Object.create({
   },
 
   openConfirmDialog: function() {
-    JUI.ConfirmDialog.notify(this, 'didConfirm').open('Are you sure?');
+    JUI.ConfirmDialog.open('Are you sure?').done(this.didConfirm);
   },
 
-  didConfirm: function(value) {
-    JUI.AlertDialog.info('The answer is %@'.fmt(value));
+  didConfirm: function() {
+    JUI.AlertDialog.info('The answer is yes');
   }
 
 });

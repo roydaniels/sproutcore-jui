@@ -101,54 +101,54 @@ JUI.AlertDialog = JUI.Dialog.extend({
   modal: true
 });
 
-JUI.AlertDialog.open = function(message, title, type) {
-  if (!alertDialog) {
-    alertDialog = JUI.AlertDialog.create();
+JUI.AlertDialog.reopenClass({
+  open: function(message, title, type) {
+    if (!alertDialog) {
+      alertDialog = JUI.AlertDialog.create();
+    }
+    set(alertDialog, 'title', title ? title : null);
+    set(alertDialog, 'message', message);
+    set(alertDialog, 'icon', type);
+    alertDialog.open();
+  },
+
+  info: function(message, title) {
+    JUI.AlertDialog.open(message, title, 'info');
+  },
+
+  error: function(message, title) {
+    JUI.AlertDialog.open(message, title, 'error');
   }
-  set(alertDialog, 'title', title ? title : null);
-  set(alertDialog, 'message', message);
-  set(alertDialog, 'icon', type);
-  alertDialog.open();
-};
-
-JUI.AlertDialog.info = function(message, title) {
-  JUI.AlertDialog.open(message, title, 'info');
-};
-
-JUI.AlertDialog.error = function(message, title) {
-  JUI.AlertDialog.open(message, title, 'error');
-};
+});
 
 JUI.ConfirmDialog = JUI.AlertDialog.extend({
   buttons: [
     {label: 'YES', action: 'didConfirm'},
     {label: 'NO', action: 'close'}
   ],
-  response: false,
   didConfirm: function() {
-    set(this, 'response', true);
+    get(this, 'answer').resolve();
     this.close();
   },
   didCloseDialog: function() {
-    this.executeAction(get(this, 'action'), get(this, 'response'));
-    set(this, 'response', false);
+    var answer = get(this, 'answer');
+    if (answer && !answer.isResolved()) {
+      answer.reject();
+    }
+    set(this, 'answer', null);
   }
 });
 
-JUI.ConfirmDialog.notify = function(target, action) {
-  if (!confirmDialog) {
-    confirmDialog = JUI.ConfirmDialog.create();
+JUI.ConfirmDialog.reopenClass({
+  open: function(message, title) {
+    if (!confirmDialog) {
+      confirmDialog = JUI.ConfirmDialog.create();
+    }
+    var answer = SC.$.Deferred();
+    set(confirmDialog, 'answer', answer);
+    set(confirmDialog, 'title', title ? title : null);
+    set(confirmDialog, 'message', message);
+    confirmDialog.open();
+    return answer.promise();
   }
-  set(confirmDialog, 'target', target);
-  set(confirmDialog, 'action', action);
-  return this;
-};
-
-JUI.ConfirmDialog.open = function(message, title) {
-  if (!confirmDialog) {
-    confirmDialog = JUI.ConfirmDialog.create();
-  }
-  set(confirmDialog, 'title', title ? title : null);
-  set(confirmDialog, 'message', message);
-  confirmDialog.open();
-};
+});

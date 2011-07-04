@@ -280,16 +280,19 @@ input.ui-button {
   @include box-shadow(rgba(0,0,0,0.5) 0 1px 2px inset);
 
   .ui-slider-handle {
-    width: 23px;
-    height: 23px;
+    width: 20px;
+    height: 20px;
     border: none;
     outline: none;
-    background-position:-92px -23px;
+    //background-position:-92px -23px;
+    background-position:0px 0px;
     @include box-shadow(none);
 
-    &.ui-state-hover { background-position:-138px -23px; }
-    &.ui-state-active { background-position:-161px -23px; }
-    &.ui-state-disabled { background-position:-207px -23px; }
+    &.ui-state-active { background-position:0px -20px; }
+
+    //&.ui-state-hover { background-position:-138px -23px; }
+    //&.ui-state-active { background-position:-161px -23px; }
+    //&.ui-state-disabled { background-position:-207px -23px; }
   }
 
   .ui-slider-range {
@@ -305,6 +308,24 @@ input.ui-button {
     margin-left: -13px;
   }
 }
+
+/* UI Spinner */
+.ui-spinner .ui-spinner-input {
+  position:relative;
+  top:2px;
+  outline:none;
+  border:none;
+  @include box-shadow(none);
+  &:hover {
+    @include box-shadow(none);
+  }
+  &:focus {
+    border:none;
+    @include box-shadow(none);
+  }
+}
+
+/* UI Datepicker */
 
 .ui-datepicker {
   padding: 0;
@@ -339,7 +360,7 @@ input.ui-button {
 
 /* SC Controls */
 .sc-checkbox input[type="checkbox"], .ui-slider .ui-slider-handle {
-  background-image: inline-image("controls.png");
+  background-image: inline-image("controls_.png");
   background-repeat: no-repeat;
 }
 

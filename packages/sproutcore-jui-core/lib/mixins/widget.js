@@ -15,6 +15,7 @@ JUI.Widget = SC.Mixin.create({
   }.property().cacheable(),
 
   didInsertElement: function() {
+    this._super();
     var options = this._gatherOptions();
     this._gatherEvents(options);
 

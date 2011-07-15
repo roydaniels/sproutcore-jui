@@ -1,0 +1,16 @@
+{
+  "name": "sproutcore-jui",
+  "summary": "SproutCore JUI",
+  "description": "The SproutCore jQuery UI mapping",
+  "homepage": "http://sproutcore.com",
+  "author": "Paul Chavard",
+  "version": "1.0.beta.1.pre",
+  "dependencies": {
+    "sproutcore-handlebars": "2.0"
+  },
+  "directories": {
+    "lib"       : "./lib",
+    "tests"     : "./tests"
+  }
+}
+

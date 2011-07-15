@@ -1,118 +1,46 @@
-require 'uglifier'
-require 'sass'
-require 'compass'
+require "erb"
+require "uglifier"
+require "sproutcore"
+require "sass"
+require "compass"
 
-PACKAGES = {
-  :core => [
-    'jquery-ui/autocomplete-html',
-    'jquery-ui/dialog-resizable',
-    'mixins/widget',
-    'mixins/target_support',
-    'controls/button',
-    'controls/slider',
-    'controls/spinner',
-    'controls/progressbar',
-    'controls/menu',
-    'controls/autocomplete',
-    'controls/sortable',
-    'controls/dialog',
-    'controls/datepicker',
-    'controls/resizable',
-    'controls/tooltip',
-    'views/select'
-  ],
-  :throbber => [
-    'jquery-ui/throbber',
-    'views/throbber'
-  ]
-}
+LICENSE = File.read("generators/license.js")
 
-VERSION = '0.1.0'
-DIST_DIR = 'pkg'
-NAMESPACE = 'sproutcore-jui'
+## Some SproutCore modules expect an exports object to exist. Until bpm exists,
+## just mock this out for now.
 
-task :default => 'jui:build'
-
-namespace :jui do
-  desc "Build all packages"
-  task :build => ['jui:core:build', 'jui:throbber:build', 'jui:aristo:build']
-
-  desc "Clean all packages"
-  task :clean => ['jui:core:clean', 'jui:throbber:clean', 'jui:aristo:clean']
-
-  namespace :core do
-    desc "Build core"
-    task :build => [:clean] do
-      mkpath_if_do_not_exists "#{DIST_DIR}/jquery-ui"
-      cp 'packages/jquery-ui/lib/jquery-ui.js', "#{DIST_DIR}/jquery-ui/jquery-ui.js"
-      build_package :core
+module SproutCore
+  module Compiler
+    class Entry
+      def body
+        "\n(function(exports) {\n#{@raw_body}\n})({});\n"
+      end
     end
-
-    desc "Clean core"
-    task :clean do
-      rm_rf "#{DIST_DIR}/jquery-ui"
-      rm_rf "#{DIST_DIR}/#{NAMESPACE}-core"
-    end
-  end
-
-  namespace :throbber do
-    desc "Build throbber"
-    task :build => [:clean] do
-      build_package :throbber
-    end
-
-    desc "Clean throbber"
-    task :clean do
-      rm_rf "#{DIST_DIR}/#{NAMESPACE}-throbber"
-    end
-  end
-
-  namespace :aristo do
-
-    desc "Build aristo"
-    task :build => [:clean] do
-      build_stylesheet_package :aristo
-    end
-
-    desc "Clean aristo"
-    task :clean do
-      rm_rf "#{DIST_DIR}/#{NAMESPACE}-aristo"
-    end
-  end
-
-end
-
-def build_package name
-  puts "Build #{name} package..."
-  content = ''
-  package_name = "#{NAMESPACE}-#{name}"
-  base_path = "packages/#{package_name}/lib"
-  PACKAGES[name].each do |file|
-    content += "(function(){\n\n"
-    content += File.read(File.join(base_path, "#{file}.js")) + "\n\n"
-    content += "})();\n\n"
-  end
-
-  mkpath_if_do_not_exists "#{DIST_DIR}/#{package_name}"
-  File.open("#{DIST_DIR}/#{package_name}/#{package_name}-#{VERSION}.js", 'w') do |f|
-    f << content
-  end
-
-  puts "Compress #{name} package..."
-  File.open("#{DIST_DIR}/#{package_name}/#{package_name}.min-#{VERSION}.js", 'w') do |f|
-    f << Uglifier.new.compile(content)
   end
 end
 
-def build_stylesheet_package name
-  puts "Build #{name} package..."
-  package_name = "#{NAMESPACE}-#{name}"
-  base_path = "packages/#{package_name}/lib"
-  engine = create_scss_engine(base_path, name)
-  mkpath_if_do_not_exists "#{DIST_DIR}/#{package_name}"
+## HELPERS ##
 
-  puts "Process #{name} package..."
-  File.open("#{DIST_DIR}/#{package_name}/#{package_name}-#{VERSION}.css", 'w') do |f|
+def strip_require(file)
+  result = File.read(file)
+  result.gsub!(%r{^\s*require\(['"]([^'"])*['"]\);?\s*$}, "")
+  result
+end
+
+def uglify(file)
+  uglified = Uglifier.compile(File.read(file))
+  "#{LICENSE}\n#{uglified}"
+end
+
+def build_stylesheet_package package_name, module_name=nil
+  module_name = package_name if module_name.nil?
+  puts "Generating #{module_name}.css"
+  base_path = "packages/#{package_name}/lib"
+  engine = create_scss_engine(base_path, module_name)
+
+  mkdir_p "dist"
+
+  File.open("dist/#{module_name}.css", 'w') do |f|
     f << engine.render
   end
 end
@@ -125,6 +53,109 @@ def create_scss_engine path, filename
   )
 end
 
-def mkpath_if_do_not_exists path
-  mkdir_p(path) if !File.exists?(path)
+# Set up the intermediate and output directories for the interim build process
+
+SproutCore::Compiler.intermediate = "tmp/intermediate"
+SproutCore::Compiler.output       = "tmp/static"
+
+# Create a compile task for a SproutCore package. This task will compute
+# dependencies and output a single JS file for a package.
+def compile_package_task(package)
+  js_tasks = SproutCore::Compiler::Preprocessors::JavaScriptTask.with_input "packages/#{package}/lib/**/*.js", "."
+  SproutCore::Compiler::CombineTask.with_tasks js_tasks, "#{SproutCore::Compiler.intermediate}/#{package}"
 end
+
+## TASKS ##
+
+# Create sproutcore:package tasks for each of the SproutCore packages
+namespace :sproutcore do
+  %w(jui throbber).each do |package|
+    task package => compile_package_task("sproutcore-#{package}")
+  end
+end
+
+# Create a jquery-ui task
+task :'jquery-ui' => compile_package_task("jquery-ui")
+
+## CSS TASKS ##
+
+# Create a jquery-ui css task
+task :'jquery-ui-css' do
+  build_stylesheet_package('aristo', 'jquery-ui')
+end
+
+# Create a aristo task
+task :aristo do
+  build_stylesheet_package('aristo')
+end
+
+# Create a build task that depends on all of the package dependencies
+task :build => ["sproutcore:jui", "sproutcore:throbber", :'jquery-ui', :'jquery-ui-css', :aristo]
+
+# Strip out require lines from sproutcore-jui.js. For the interim, requires are
+# precomputed by the compiler so they are no longer necessary at runtime.
+file "dist/sproutcore-jui.js" => :build do
+  puts "Generating sproutcore-jui.js"
+
+  mkdir_p "dist"
+
+  File.open("dist/sproutcore-jui.js", "w") do |file|
+    file.puts strip_require("tmp/static/jquery-ui.js")
+    file.puts strip_require("tmp/static/sproutcore-jui.js")
+  end
+end
+
+# Strip out require lines from sproutcore-throbber.js. For the interim, requires are
+# precomputed by the compiler so they are no longer necessary at runtime.
+file "dist/sproutcore-throbber.js" => [:build] do
+  puts "Generating sproutcore-throbber.js"
+
+  mkdir_p "dist"
+
+  File.open("dist/sproutcore-throbber.js", "w") do |file|
+    file.puts strip_require("tmp/static/sproutcore-throbber.js")
+  end
+end
+
+# Minify dist/sproutcore-jui.js to dist/sproutcore-jui.min.js
+file "dist/sproutcore-jui.min.js" => "dist/sproutcore-jui.js" do
+  puts "Generating sproutcore-jui.min.js"
+
+  File.open("dist/sproutcore-jui.min.js", "w") do |file|
+    file.puts uglify("dist/sproutcore-jui.js")
+  end
+end
+
+# Minify dist/sproutcore-throbber.js to dist/sproutcore-throbber.min.js
+file "dist/sproutcore-throbber.min.js" => "dist/sproutcore-throbber.js" do
+  puts "Generating sproutcore-throbber.min.js"
+
+  File.open("dist/sproutcore-throbber.min.js", "w") do |file|
+    file.puts uglify("dist/sproutcore-throbber.js")
+  end
+end
+
+SC_VERSION = File.read("VERSION")
+
+desc "bump the version to the specified version"
+task :bump_version, :version do |t, args|
+  File.open("VERSION", "w") { |file| file.write args[:version] }
+
+  Dir["packages/sproutcore-*/package.json"].each do |package|
+    contents = File.read(package)
+    contents.gsub! %r{"version": .*$}, %{"version": "#{args[:version]}",}
+
+    File.open(package, "w") { |file| file.write contents }
+  end
+end
+
+desc "Build SproutCore JUI and SproutCore Throbber"
+task :dist => ["dist/sproutcore-jui.min.js", "dist/sproutcore-throbber.min.js"]
+
+desc "Clean build artifacts from previous builds"
+task :clean do
+  sh "rm -rf tmp && rm -rf dist"
+end
+
+task :default => :dist
+

@@ -1,0 +1,16 @@
+{
+  "name": "sproutcore-throbber",
+  "summary": "SproutCore Throbber",
+  "description": "SproutCore JUI Throbber",
+  "homepage": "http://github.com/tchak/sproutcore-jui",
+  "author": "Paul Chavard",
+  "version": "1.0.beta.1.pre",
+  "dependencies": {
+    "sproutcore-jui": "1.0"
+  },
+  "directories": {
+    "lib"       : "./lib",
+    "tests"     : "./tests"
+  }
+}
+

@@ -47,7 +47,6 @@ JUI.Widget = SC.Mixin.create({
 
   _gatherEvents: function(options) {
     var uiEvents = get(this, 'uiEvents');
-    //uiEvents.push('create');
 
     uiEvents.forEach(function(eventType) {
       var eventHandler = eventType === 'create' ? this.didCreateWidget : this[eventType];
@@ -63,7 +62,6 @@ JUI.Widget = SC.Mixin.create({
     var uiOptions = get(this, 'uiOptions'),
         options = {},
         defaultOptions = get(this, 'uiWidget').prototype.options;
-    //uiOptions.push('disabled');
 
     uiOptions.forEach(function(key) {
       var value = get(this, key),
@@ -92,11 +90,13 @@ JUI.Widget = SC.Mixin.create({
 
   _defineMethods: function() {
     var uiMethods = get(this, 'uiMethods'),
-        ui = get(this, 'ui');
+        methods = {};
     uiMethods.forEach(function(methodName) {
-      this[methodName] = function() {
-        return ui[methodName]();
+      methods[methodName] = function() {
+        var ui = get(this, 'ui');
+        return ui[methodName].apply(ui, arguments);
       };
-    }, this);
+    });
+    this.reopen(methods);
   }
 });

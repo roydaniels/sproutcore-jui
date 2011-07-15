@@ -1,6 +1,6 @@
 
 guard 'shell' do
-  watch(%r{^packages/sproutcore-jui-core/lib/.+\.js}) { `rake jui:core:build` }
-  watch(%r{^packages/sproutcore-jui-aristo/lib/.+\.scss}) { `rake jui:aristo:build` }
-  watch(%r{^packages/sproutcore-jui-throbber/lib/.+\.js}) { `rake jui:throbber:build` }
+  watch(%r{^packages/sproutcore-jui/lib/.+\.js}) { `bundle exec rake dist` }
+  watch(%r{^packages/sproutcore-throbber/lib/.+\.js}) { `bundle exec rake dist` }
+  watch(%r{^packages/aristo/lib/.+\.scss}) { `bundle exec rake dist` }
 end

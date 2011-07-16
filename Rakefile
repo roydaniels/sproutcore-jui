@@ -75,7 +75,7 @@ namespace :sproutcore do
 end
 
 # Create a jquery-ui task
-task :'jquery-ui' => compile_package_task("jquery-ui")
+#task :'jquery-ui' => compile_package_task("jquery-ui")
 
 ## CSS TASKS ##
 
@@ -90,7 +90,7 @@ task :aristo do
 end
 
 # Create a build task that depends on all of the package dependencies
-task :build => ["sproutcore:jui", "sproutcore:throbber", :'jquery-ui', :'jquery-ui-css', :aristo]
+task :build => ["sproutcore:jui", "sproutcore:throbber", :'jquery-ui-css', :aristo]
 
 # Strip out require lines from sproutcore-jui.js. For the interim, requires are
 # precomputed by the compiler so they are no longer necessary at runtime.
@@ -100,7 +100,6 @@ file "dist/sproutcore-jui.js" => :build do
   mkdir_p "dist"
 
   File.open("dist/sproutcore-jui.js", "w") do |file|
-    file.puts strip_require("tmp/static/jquery-ui.js")
     file.puts strip_require("tmp/static/sproutcore-jui.js")
   end
 end

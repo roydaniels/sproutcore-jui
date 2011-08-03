@@ -8,3 +8,4 @@ require('sproutcore-jui/controls/datepicker');
 require('sproutcore-jui/controls/tooltip');
 require('sproutcore-jui/controls/sortable');
 require('sproutcore-jui/controls/resizable');
+require('sproutcore-jui/controls/throbber');

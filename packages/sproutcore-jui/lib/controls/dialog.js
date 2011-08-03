@@ -18,31 +18,10 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
   uiMethods: ['open', 'close'],
 
   isOpen: false,
-
   message: '',
-  icon: null,
   buttons: [],
 
-  _iconClassNames: function() {
-    var icon = get(this, 'icon');
-    if (icon) {
-      return "ui-icon ui-icon-%@".fmt(icon === 'error' ? 'alert' : icon);
-    }
-    return '';
-  }.property('icon').cacheable(),
-
-  _stateClassNames: function() {
-    var icon = get(this, 'icon');
-    if (icon === 'error') {
-      return 'ui-state-error';
-    } else if (icon === 'info') {
-      return 'ui-state-highlight';
-    }
-    return '';
-  }.property('icon').cacheable(),
-
-  defaultTemplate: SC.Handlebars.compile('<p {{bindAttr class="_stateClassNames"}}>\
-    <span {{bindAttr class="_iconClassNames"}}></span>{{message}}</p>'),
+  defaultTemplate: SC.Handlebars.compile('<p>{{message}}</p>'),
 
   _buttons: function() {
     var buttons = [],
@@ -99,34 +78,29 @@ JUI.Dialog.close = function() {
 
 var alertDialog, confirmDialog;
 
-JUI.AlertDialog = JUI.Dialog.extend({
+JUI.ModalDialog = JUI.Dialog.extend({
   buttons: [{label: 'OK', action: 'close'}],
   resizable: false,
   draggable: false,
   modal: true
 });
 
-JUI.AlertDialog.reopenClass({
+JUI.AlertDialog = JUI.ModalDialog.create({
   open: function(message, title, type) {
-    if (!alertDialog) {
-      alertDialog = JUI.AlertDialog.create();
-    }
-    set(alertDialog, 'title', title ? title : null);
-    set(alertDialog, 'message', message);
-    set(alertDialog, 'icon', type);
-    alertDialog.open();
+    set(this, 'title', title ? title : null);
+    set(this, 'message', message);
+    set(this, 'icon', type);
+    this._super();
   },
-
   info: function(message, title) {
-    JUI.AlertDialog.open(message, title, 'info');
+    this.open(message, title, 'info');
   },
-
   error: function(message, title) {
-    JUI.AlertDialog.open(message, title, 'error');
+    this.open(message, title, 'error');
   }
 });
 
-JUI.ConfirmDialog = JUI.AlertDialog.extend({
+JUI.ConfirmDialog = JUI.ModalDialog.create({
   buttons: [
     {label: 'YES', action: 'didConfirm'},
     {label: 'NO', action: 'close'}
@@ -141,19 +115,13 @@ JUI.ConfirmDialog = JUI.AlertDialog.extend({
       answer.reject();
     }
     set(this, 'answer', null);
-  }
-});
-
-JUI.ConfirmDialog.reopenClass({
+  },
   open: function(message, title) {
-    if (!confirmDialog) {
-      confirmDialog = JUI.ConfirmDialog.create();
-    }
     var answer = SC.$.Deferred();
-    set(confirmDialog, 'answer', answer);
-    set(confirmDialog, 'title', title ? title : null);
-    set(confirmDialog, 'message', message);
-    confirmDialog.open();
+    set(this, 'answer', answer);
+    set(this, 'title', title ? title : null);
+    set(this, 'message', message);
+    this._super();
     return answer.promise();
   }
 });

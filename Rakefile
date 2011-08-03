@@ -1,7 +1,7 @@
+require File.expand_path("../vendor/bundler/setup", __FILE__)
 require "erb"
 require "uglifier"
 require "sproutcore"
-require "sass"
 require "compass"
 
 LICENSE = File.read("generators/license.js")
@@ -24,6 +24,12 @@ end
 def strip_require(file)
   result = File.read(file)
   result.gsub!(%r{^\s*require\(['"]([^'"])*['"]\);?\s*$}, "")
+  result
+end
+
+def strip_sc_assert(file)
+  result = File.read(file)
+  result.gsub!(%r{^(\s)+sc_assert\((.*)\).*$}, "")
   result
 end
 
@@ -69,7 +75,7 @@ end
 
 # Create sproutcore:package tasks for each of the SproutCore packages
 namespace :sproutcore do
-  %w(jui throbber).each do |package|
+  %w(jui).each do |package|
     task package => compile_package_task("sproutcore-#{package}")
   end
 end
@@ -90,7 +96,7 @@ task :aristo do
 end
 
 # Create a build task that depends on all of the package dependencies
-task :build => ["sproutcore:jui", "sproutcore:throbber", :'jquery-ui-css', :aristo]
+task :build => ["sproutcore:jui", :'jquery-ui-css', :aristo]
 
 # Strip out require lines from sproutcore-jui.js. For the interim, requires are
 # precomputed by the compiler so they are no longer necessary at runtime.
@@ -104,33 +110,12 @@ file "dist/sproutcore-jui.js" => :build do
   end
 end
 
-# Strip out require lines from sproutcore-throbber.js. For the interim, requires are
-# precomputed by the compiler so they are no longer necessary at runtime.
-file "dist/sproutcore-throbber.js" => [:build] do
-  puts "Generating sproutcore-throbber.js"
-
-  mkdir_p "dist"
-
-  File.open("dist/sproutcore-throbber.js", "w") do |file|
-    file.puts strip_require("tmp/static/sproutcore-throbber.js")
-  end
-end
-
 # Minify dist/sproutcore-jui.js to dist/sproutcore-jui.min.js
 file "dist/sproutcore-jui.min.js" => "dist/sproutcore-jui.js" do
   puts "Generating sproutcore-jui.min.js"
 
   File.open("dist/sproutcore-jui.min.js", "w") do |file|
     file.puts uglify("dist/sproutcore-jui.js")
-  end
-end
-
-# Minify dist/sproutcore-throbber.js to dist/sproutcore-throbber.min.js
-file "dist/sproutcore-throbber.min.js" => "dist/sproutcore-throbber.js" do
-  puts "Generating sproutcore-throbber.min.js"
-
-  File.open("dist/sproutcore-throbber.min.js", "w") do |file|
-    file.puts uglify("dist/sproutcore-throbber.js")
   end
 end
 
@@ -149,7 +134,7 @@ task :bump_version, :version do |t, args|
 end
 
 desc "Build SproutCore JUI and SproutCore Throbber"
-task :dist => ["dist/sproutcore-jui.min.js", "dist/sproutcore-throbber.min.js"]
+task :dist => ["dist/sproutcore-jui.min.js"]
 
 desc "Clean build artifacts from previous builds"
 task :clean do

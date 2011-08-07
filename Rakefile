@@ -2,7 +2,6 @@ require File.expand_path("../vendor/bundler/setup", __FILE__)
 require "erb"
 require "uglifier"
 require "sproutcore"
-require "compass"
 
 LICENSE = File.read("generators/license.js")
 
@@ -38,27 +37,6 @@ def uglify(file)
   "#{LICENSE}\n#{uglified}"
 end
 
-def build_stylesheet_package package_name, module_name=nil
-  module_name = package_name if module_name.nil?
-  puts "Generating #{module_name}.css"
-  base_path = "packages/#{package_name}/lib"
-  engine = create_scss_engine(base_path, module_name)
-
-  mkdir_p "dist"
-
-  File.open("dist/#{module_name}.css", 'w') do |f|
-    f << engine.render
-  end
-end
-
-def create_scss_engine path, filename
-  Compass.configuration.images_path = File.join(path, 'images')  
-  Sass::Engine.new(File.read(File.join(path, "#{filename}.scss")),
-    :syntax => :scss,
-    :load_paths => Compass.configuration.sass_load_paths + [File.expand_path(path)]
-  )
-end
-
 # Set up the intermediate and output directories for the interim build process
 
 SproutCore::Compiler.intermediate = "tmp/intermediate"
@@ -80,23 +58,8 @@ namespace :sproutcore do
   end
 end
 
-# Create a jquery-ui task
-#task :'jquery-ui' => compile_package_task("jquery-ui")
-
-## CSS TASKS ##
-
-# Create a jquery-ui css task
-task :'jquery-ui-css' do
-  build_stylesheet_package('aristo', 'jquery-ui')
-end
-
-# Create a aristo task
-task :aristo do
-  build_stylesheet_package('aristo')
-end
-
 # Create a build task that depends on all of the package dependencies
-task :build => ["sproutcore:jui", :'jquery-ui-css', :aristo]
+task :build => ["sproutcore:jui"]
 
 # Strip out require lines from sproutcore-jui.js. For the interim, requires are
 # precomputed by the compiler so they are no longer necessary at runtime.
@@ -114,26 +77,34 @@ end
 file "dist/sproutcore-jui.min.js" => "dist/sproutcore-jui.js" do
   puts "Generating sproutcore-jui.min.js"
 
-  File.open("dist/sproutcore-jui.min.js", "w") do |file|
-    file.puts uglify("dist/sproutcore-jui.js")
+  File.open("dist/sproutcore-jui.prod.js", "w") do |file|
+    file.puts strip_sc_assert("dist/sproutcore-jui.js")
   end
+
+  File.open("dist/sproutcore-jui.min.js", "w") do |file|
+    file.puts uglify("dist/sproutcore-jui.prod.js")
+  end
+
+  rm "dist/sproutcore-jui.prod.js"
 end
 
 SC_VERSION = File.read("VERSION")
 
 desc "bump the version to the specified version"
 task :bump_version, :version do |t, args|
-  File.open("VERSION", "w") { |file| file.write args[:version] }
+  version = args[:version]
 
-  Dir["packages/sproutcore-*/package.json"].each do |package|
-    contents = File.read(package)
-    contents.gsub! %r{"version": .*$}, %{"version": "#{args[:version]}",}
+  File.open("VERSION", "w") { |file| file.write version }
 
-    File.open(package, "w") { |file| file.write contents }
-  end
+  contents = File.read("packages/sproutcore-jui/package.json")
+  contents.gsub! %r{"version": .*$}, %{"version": "#{version}",}
+  File.open("packages/sproutcore-jui/package.json", "w") { |file| file.write contents }
+
+  sh %{git add VERSION package.json packages/sproutcore-jui/package.json}
+  sh %{git commit -m "Bump version to #{version}"}
 end
 
-desc "Build SproutCore JUI and SproutCore Throbber"
+desc "Build SproutCore JUI"
 task :dist => ["dist/sproutcore-jui.min.js"]
 
 desc "Clean build artifacts from previous builds"

@@ -20,4 +20,4 @@ if ('undefined' !== typeof window) {
   @default '1.0.alpha'
   @constant
 */
-JUI.VERSION = '1.0.alpha';
+JUI.VERSION = '1.0.beta.1.pre';

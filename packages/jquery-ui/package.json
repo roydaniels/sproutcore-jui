@@ -1,15 +1,14 @@
 {
   "name": "jquery-ui",
-  "summary": "jQuery UI",
-  "description": "The SproutCore jQuery UI mapping",
-  "homepage": "http://sproutcore.com",
-  "author": "Paul Chavard",
-  "version": "1.9m5",
+  "summary": "jQuery User Interface library",
+  "description": "jQuery User Interface Widgets library",
+  "homepage": "http://jqueryui.com",
+  "author": "jQuery UI Team",
+  "version": "1.9.m5",
+  "directories": {
+    "lib": "lib"
+  },
   "dependencies": {
     "jquery": "1.6"
-  },
-  "directories": {
-    "lib"       : "./lib"
   }
 }
-

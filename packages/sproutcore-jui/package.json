@@ -1,16 +1,35 @@
 {
   "name": "sproutcore-jui",
   "summary": "SproutCore JUI",
-  "description": "The SproutCore jQuery UI mapping",
-  "homepage": "http://sproutcore.com",
+  "description": "jQuery UI Widgets for SproutCore",
+  "homepage": "http://github.com/tchak/sproutcore-jui",
   "author": "Paul Chavard",
   "version": "1.0.beta.1.pre",
-  "dependencies": {
-    "sproutcore-handlebars": "2.0"
-  },
+  "bpm": "1.0.0",
   "directories": {
-    "lib"       : "./lib",
-    "tests"     : "./tests"
+    "lib"       : "lib"
+  },
+
+  "dependencies": {
+    "sproutcore-handlebars": "2.0.beta.2"
+  },
+  "dependencies:development": {
+    "spade-qunit": "~> 1.0.0"
+  },
+  "bpm:build": {
+    "bpm_libs.js": {
+      "directories": [
+        "lib"
+      ],
+      "modes": "*"
+    },
+    "sproutcore-jui/bpm_tests.js": {
+      "directories": [
+        "tests"
+      ],
+      "modes": [
+        "debug"
+      ]
+    }
   }
 }
-

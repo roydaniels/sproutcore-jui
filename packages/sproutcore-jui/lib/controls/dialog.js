@@ -7,6 +7,19 @@ var get = SC.get, set = SC.set;
 /**
   @class
   @since SproutCore JUI 1.0
+  @extends JUI.DialogButton
+*/
+JUI.DialogButton = SC.Object.extend(JUI.TargetSupport, {
+  label: 'OK',
+  action: 'close',
+  executeAction: function() {
+    this._super(get(this, 'action'));
+  }
+});
+
+/**
+  @class
+  @since SproutCore JUI 1.0
   @extends JUI.Dialog
 */
 JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
@@ -15,7 +28,6 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
   uiOptions: ['title', '_buttons', 'position', 'closeOnEscape',
     'modal', 'draggable', 'resizable', 'autoReposition',
     'width', 'height', 'maxWidth', 'maxHeight', 'minWidth', 'minHeight'],
-  uiMethods: ['open', 'close'],
 
   isOpen: false,
   message: '',
@@ -23,26 +35,42 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
 
   defaultTemplate: SC.Handlebars.compile('<p>{{message}}</p>'),
 
+  open: function() {
+    if (get(this, 'state') !== 'inDOM') {
+      this._insertElementLater(SC.K);
+    } else {
+      get(this, 'ui').open();
+    }
+  },
+
+  close: function() {
+    get(this, 'ui').close();
+  },
+
+  didInsertElement: function() {
+    this._super();
+    get(this, 'ui')._bind({
+      dialogopen: $.proxy(this._open, this),
+      dialogclose: $.proxy(this._close, this)
+    });
+  },
+
   _buttons: function() {
-    var buttons = [],
-        target = get(this, 'targetObject');
-    get(this, 'buttons').forEach(function(button) {
-      var action = button.action,
-          context = this;
-      if (!this[action] && target) {
-        context = target;
-      }
-      buttons.push({
-        text: button.label,
-        click: function(event) {
-          if (context && context[action]) {
-            context[action].call(context, event);
-          }
-        }
-      });
-    }, this);
-    return buttons;
+    return get(this, 'buttons').map(this._buildButton, this);
   }.property('buttons').cacheable(),
+
+  _buildButton: function(buttonPath) {
+    var button = this.getPath(buttonPath);
+    if (!button.isInstance) {
+      button = button.create({
+        target: get(this, 'targetObject') || this
+      });
+      set(this, buttonPath, button);
+    }
+    var props = {text: get(button, 'label')};
+    props.click = $.proxy(button, 'executeAction')
+    return props;
+  },
 
   _open: function() {
     set(this, 'isOpen', true);
@@ -54,20 +82,6 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
     this.didCloseDialog();
   },
 
-  open: function() {
-    this._insertElementLater(SC.K);
-    this._open();
-  },
-
-  didInsertElement: function() {
-    this._super();
-    get(this, 'ui')._bind({
-      dialogopen: $.proxy(this._open, this),
-      dialogclose: $.proxy(this._close, this)
-    });
-  },
-
-  close: SC.K,
   didOpenDialog: SC.K,
   didCloseDialog: SC.K
 });
@@ -76,20 +90,19 @@ JUI.Dialog.close = function() {
   $('.ui-dialog-content:visible').dialog('close');
 };
 
-var alertDialog, confirmDialog;
-
 JUI.ModalDialog = JUI.Dialog.extend({
-  buttons: [{label: 'OK', action: 'close'}],
+  buttons: ['ok'],
+  ok: JUI.DialogButton,
   resizable: false,
   draggable: false,
   modal: true
 });
 
 JUI.AlertDialog = JUI.ModalDialog.create({
-  open: function(message, title, type) {
-    set(this, 'title', title ? title : null);
+  open: function(message, title, icon) {
+    set(this, 'title', title);
     set(this, 'message', message);
-    set(this, 'icon', type);
+    set(this, 'icon', icon);
     this._super();
   },
   info: function(message, title) {
@@ -101,10 +114,12 @@ JUI.AlertDialog = JUI.ModalDialog.create({
 });
 
 JUI.ConfirmDialog = JUI.ModalDialog.create({
-  buttons: [
-    {label: 'YES', action: 'didConfirm'},
-    {label: 'NO', action: 'close'}
-  ],
+  buttons: ['yes', 'no'],
+  yes: JUI.DialogButton.extend({
+    label: 'YES',
+    action: 'didConfirm'
+  }),
+  no: JUI.DialogButton.extend({label: 'NO'}),
   didConfirm: function() {
     get(this, 'answer').resolve();
     this.close();
@@ -119,7 +134,7 @@ JUI.ConfirmDialog = JUI.ModalDialog.create({
   open: function(message, title) {
     var answer = SC.$.Deferred();
     set(this, 'answer', answer);
-    set(this, 'title', title ? title : null);
+    set(this, 'title', title);
     set(this, 'message', message);
     this._super();
     return answer.promise();

@@ -7,11 +7,12 @@
   "version": "1.0.beta.1.pre",
   "bpm": "1.0.0",
   "directories": {
-    "lib"       : "lib"
+    "lib": "lib"
   },
-
   "dependencies": {
-    "sproutcore-handlebars": "2.0.beta.2"
+    "spade": "~> 1.0",
+    "jquery-ui": ">= 0-pre",
+    "sproutcore-handlebars": ">= 0-pre"
   },
   "dependencies:development": {
     "spade-qunit": "~> 1.0.0"

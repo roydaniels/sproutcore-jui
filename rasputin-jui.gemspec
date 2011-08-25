@@ -1,23 +1,23 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "sproutcore-jui/version"
+require "rasputin-jui/version"
 
 Gem::Specification.new do |s|
-  s.name        = "sproutcore-jui"
-  s.version     = SproutCoreJUI::VERSION
+  s.name        = "rasputin-jui"
+  s.version     = Rasputin::JUI::VERSION
   s.authors     = ["Paul Chavard"]
   s.email       = ["paul@chavard.net"]
   s.homepage    = "http://github.com/tchak/sproutcore-jui"
-  s.summary     = %q{SproutCore 2.0 wrapper for jQuery UI.}
-  s.description = %q{SproutCore 2.0 wrapper for jQuery UI for Rails asset pipeline.}
+  s.summary     = %q{SproutCore 2.0 jQuery UI wrapper.}
+  s.description = %q{SproutCore 2.0 jQuery UI wrapper for Rails asset pipeline.}
 
-  s.rubyforge_project = "sproutcore-jui"
+  s.rubyforge_project = "rasputin-jui"
   s.add_runtime_dependency 'rasputin', '~> 0.8.0'
 
   s.files    = [
-    'lib/sproutcore-jui.rb',
-    'lib/sproutcore-jui/engine.rb',
-    'lib/sproutcore-jui/version.rb',
+    'lib/rasputin-jui.rb',
+    'lib/rasputin-jui/engine.rb',
+    'lib/rasputin-jui/version.rb',
     'vendor/assets/javascripts/jquery-ui-19.js',
     'vendor/assets/javascripts/sproutcore-jui.js',
     'vendor/assets/stylesheets/jquery-ui.css',

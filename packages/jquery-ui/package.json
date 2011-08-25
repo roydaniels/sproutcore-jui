@@ -4,7 +4,7 @@
   "description": "jQuery User Interface Widgets library",
   "homepage": "http://jqueryui.com",
   "author": "jQuery UI Team",
-  "version": "1.9.m5.pre1",
+  "version": "1.9.m5-r1",
   "bpm": "1.0.0",
   "directories": {
     "lib": "lib"

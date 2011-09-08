@@ -20,8 +20,6 @@ JUI.Widget = SC.Mixin.create({
 
     var ui = get(this, 'uiWidget')(options, get(this, 'element'));
     set(this, 'ui', ui);
-
-    this._defineMethods();
   },
 
   willDestroyElement: function() {
@@ -81,22 +79,10 @@ JUI.Widget = SC.Mixin.create({
       };
 
       this.addObserver(key, observer);
-      this._observers = this._observers || {};
-      this._observers[key] = observer;
+      //this._observers = this._observers || {};
+      //this._observers[key] = observer;
     }, this);
 
     return options;
-  },
-
-  _defineMethods: function() {
-    var uiMethods = get(this, 'uiMethods'),
-        methods = {};
-    uiMethods.forEach(function(methodName) {
-      methods[methodName] = function() {
-        var ui = get(this, 'ui');
-        return ui[methodName].apply(ui, arguments);
-      };
-    });
-    this.reopen(methods);
   }
 });

@@ -1,3 +1,4 @@
+require('sproutcore-jui/controls/autocomplete');
 require('sproutcore-jui/controls/button');
 require('sproutcore-jui/controls/slider');
 require('sproutcore-jui/controls/spinner');

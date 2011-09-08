@@ -20,3 +20,13 @@ JUI.Menu = SC.CollectionView.extend(JUI.Widget, {
     if (ui) { ui.refresh(); }
   }
 });
+
+JUI.PopupMenu = JUI.Menu.extend({
+  didInsertElement: function() {
+    this._super();
+    if(get(this, 'triggerId'))
+      this.$().popup({ trigger: $("#" + get(this, 'triggerId')) });
+    else
+      this.$().popup();
+  }
+});

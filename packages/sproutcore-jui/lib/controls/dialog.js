@@ -13,7 +13,7 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
   uiType: 'dialog',
   uiEvents: ['beforeClose'],
   uiOptions: ['title', '_buttons', 'position', 'closeOnEscape',
-    'modal', 'draggable', 'resizable', 'autoReposition',
+    'modal', 'draggable', 'resizable', 'autoReposition', 'autoOpen',
     'width', 'height', 'maxWidth', 'maxHeight', 'minWidth', 'minHeight'],
   uiMethods: ['open', 'close'],
 
@@ -79,7 +79,7 @@ JUI.Dialog.close = function() {
 var alertDialog, confirmDialog;
 
 JUI.ModalDialog = JUI.Dialog.extend({
-  buttons: [{label: 'OK', action: 'close'}],
+  //buttons: [{label: 'OK', action: 'close'}],
   resizable: false,
   draggable: false,
   modal: true

@@ -1,4 +1,5 @@
 require('sproutcore-jui/mixins/widget');
+require('sproutcore-jui/jquery-ui/jquery.ui.slider');
 
 var set = SC.set;
 

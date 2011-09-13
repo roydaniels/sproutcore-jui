@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "spade": "~> 1.0",
-    "jquery-ui": "~> 1.9",
     "sproutcore-handlebars": ">= 0-pre"
   },
   "dependencies:development": {

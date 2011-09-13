@@ -90,20 +90,6 @@ file "dist/sproutcore-jui.min.js" => "dist/sproutcore-jui.js" do
   rm "dist/sproutcore-jui.prod.js"
 end
 
-# desc "bump the version to the specified version"
-# task :bump_version, :version do |t, args|
-#   version = args[:version]
-
-#   File.open("VERSION", "w") { |file| file.write version }
-
-#   contents = File.read("packages/sproutcore-jui/package.json")
-#   contents.gsub! %r{"version": .*$}, %{"version": "#{version}",}
-#   File.open("packages/sproutcore-jui/package.json", "w") { |file| file.write contents }
-
-#   sh %{git add VERSION package.json packages/sproutcore-jui/package.json}
-#   sh %{git commit -m "Bump version to #{version}"}
-# end
-
 desc "Build SproutCore JUI"
 task :dist => ["dist/sproutcore-jui.min.js"]
 

@@ -116,7 +116,7 @@ Demo.dialogsController = SC.Object.create({
   },
 
   openConfirmDialog: function() {
-    JUI.ConfirmDialog.open('Are you sure?').done(this.didConfirm);
+    JUI.ConfirmDialog.open('Are you sure?', 'Confirmation', this, 'didConfirm');
   },
 
   didConfirm: function() {

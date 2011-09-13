@@ -12,16 +12,14 @@ Gem::Specification.new do |s|
   s.description = %q{SproutCore 2.0 jQuery UI wrapper for Rails asset pipeline.}
 
   s.rubyforge_project = "rasputin-jui"
-  s.add_runtime_dependency 'rasputin', '~> 0.8.0'
+  s.add_runtime_dependency 'rasputin', '~> 0.9.1'
 
   s.files    = [
     'lib/rasputin-jui.rb',
-    'lib/rasputin-jui/engine.rb',
     'lib/rasputin-jui/version.rb',
-    'vendor/assets/javascripts/jquery-ui-19.js',
     'vendor/assets/javascripts/sproutcore-jui.js',
-    'vendor/assets/stylesheets/jquery-ui.css',
-    'vendor/assets/stylesheets/aristo.css',
+    'vendor/assets/stylesheets/sproutcore-jui.css',
+    'vendor/assets/stylesheets/sproutcore-jui-aristo.css',
     'Gemfile',
     'Rakefile',
     'README.md'

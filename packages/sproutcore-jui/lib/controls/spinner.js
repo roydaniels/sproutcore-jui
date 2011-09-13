@@ -1,4 +1,5 @@
 require('sproutcore-jui/mixins/widget');
+require('sproutcore-jui/jquery-ui/jquery.ui.spinner');
 
 var set = SC.set;
 

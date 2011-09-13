@@ -1,6 +1,7 @@
-require('sproutcore-jui/jquery-ui/autocomplete');
 require('sproutcore-jui/mixins/widget');
 require('sproutcore-jui/mixins/target_support');
+require('sproutcore-jui/jquery-ui/jquery.ui.autocomplete');
+require('sproutcore-jui/jquery-ui/ext/jquery.ui.autocomplete');
 
 var get = SC.get;
 

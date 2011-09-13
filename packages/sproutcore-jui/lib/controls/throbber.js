@@ -1,5 +1,5 @@
-require('sproutcore-jui/jquery-ui/throbber');
 require('sproutcore-jui/mixins/widget');
+require('sproutcore-jui/jquery-ui/jquery.ui.throbber');
 
 /*
  * JUI.Throbber 

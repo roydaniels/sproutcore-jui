@@ -1,6 +1,7 @@
-require('sproutcore-jui/jquery-ui/dialog-resizable');
 require('sproutcore-jui/mixins/widget');
 require('sproutcore-jui/mixins/target_support');
+require('sproutcore-jui/jquery-ui/jquery.ui.dialog');
+require('sproutcore-jui/jquery-ui/ext/jquery.ui.dialog');
 
 var get = SC.get, set = SC.set;
 
@@ -114,7 +115,7 @@ JUI.AlertDialog = JUI.ModalDialog.create({
   }
 });
 
-JUI.ConfirmDialog = JUI.ModalDialog.create({
+JUI.ConfirmDialog = JUI.ModalDialog.create(JUI.TargetSupport, {
   buttons: ['yes', 'no'],
   yes: JUI.DialogButton.extend({
     label: 'YES',
@@ -132,12 +133,26 @@ JUI.ConfirmDialog = JUI.ModalDialog.create({
     }
     set(this, 'answer', null);
   },
-  open: function(message, title) {
+  open: function(message, title, target, action) {
     var answer = SC.$.Deferred();
     set(this, 'answer', answer);
     set(this, 'title', title);
     set(this, 'message', message);
+
+    if (!action) {
+      action = target;
+      target = this;
+    }
+    if (typeof action === 'string') {
+      action = target[action];
+    }
+    answer.done(function() {
+      action.call(target, true);
+    });
+    answer.fail(function() {
+      action.call(target, false);
+    });
+
     this._super();
-    return answer.promise();
   }
 });

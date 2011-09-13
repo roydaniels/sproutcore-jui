@@ -1,2 +1,8 @@
 require "rasputin-jui/version"
-require "rasputin-jui/engine"
+
+module Rasputin
+  module JUI
+    class Engine < ::Rails::Engine
+    end
+  end
+end

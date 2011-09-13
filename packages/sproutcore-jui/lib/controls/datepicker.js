@@ -1,4 +1,5 @@
 require('sproutcore-jui/mixins/widget');
+require('sproutcore-jui/jquery-ui/jquery.ui.datepicker');
 
 var get = SC.get, set = SC.set, none = SC.none;
 

@@ -3,15 +3,15 @@
   "summary": "SproutCore JUI",
   "description": "jQuery UI Widgets for SproutCore",
   "homepage": "http://github.com/tchak/sproutcore-jui",
-  "author": "Paul Chavard with contributions from NEXTfinity, LLC",
-  "version": "1.0.beta.1.pre",
+  "author": "Paul Chavard",
+  "version": "0.5",
   "bpm": "1.0.0",
   "directories": {
-    "lib"       : "lib"
+    "lib": "lib"
   },
-
   "dependencies": {
-    "sproutcore-handlebars": ">= 0"
+    "spade": "~> 1.0",
+    "sproutcore-handlebars": ">= 0-pre"
   },
   "dependencies:development": {
     "spade-qunit": "~> 1.0.0"

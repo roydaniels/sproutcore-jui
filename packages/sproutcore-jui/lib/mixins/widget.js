@@ -1,4 +1,6 @@
 require('sproutcore-jui/core');
+require('sproutcore-jui/jquery-ui/jquery.ui.core');
+require('sproutcore-jui/jquery-ui/jquery.ui.widget');
 
 var get = SC.get, set = SC.set, none = SC.none;
 

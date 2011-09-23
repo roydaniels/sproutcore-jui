@@ -4,27 +4,27 @@
   "description": "jQuery UI Widgets for SproutCore",
   "homepage": "http://github.com/tchak/sproutcore-jui",
   "author": "Paul Chavard",
-  "version": "0.5",
+  "version": "0.9",
   "bpm": "1.0.0",
-  "directories": {
+  "files": {
     "lib": "lib"
   },
   "dependencies": {
     "spade": "~> 1.0",
-    "sproutcore-handlebars": ">= 0-pre"
+    "sproutcore-handlebars": ">= 0.pre"
   },
   "dependencies:development": {
     "spade-qunit": "~> 1.0.0"
   },
   "bpm:build": {
     "bpm_libs.js": {
-      "directories": [
+      "files": [
         "lib"
       ],
       "modes": "*"
     },
     "sproutcore-jui/bpm_tests.js": {
-      "directories": [
+      "files": [
         "tests"
       ],
       "modes": [

@@ -1,7 +1,5 @@
 require('sproutcore-jui/mixins/widget');
 
-var get = SC.get;
-
 /**
   @class
   @since SproutCore JUI 1.0

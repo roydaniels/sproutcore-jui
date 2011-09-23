@@ -94,7 +94,7 @@ desc "Build SproutCore JUI"
 task :dist_sc => ["dist/sproutcore-jui.min.js"]
 
 desc "Clean build artifacts from previous builds"
-task :clean do
+task :clean_sc do
   sh "rm -rf tmp && rm -rf dist"
 end
 

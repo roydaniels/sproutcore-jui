@@ -150,12 +150,6 @@ Demo.sortableController = SC.ArrayProxy.create({
   content: Demo.availableTags
 });
 
-Demo.Buttons = SC.View.extend({
-  didInsertElement: function() {
-    this.$('div, a, button, input').button();
-  }
-});
-
   </script>
 
   <h1>SproutCore 2.0 and SproutCore JUI</h1>
@@ -164,26 +158,17 @@ Demo.Buttons = SC.View.extend({
     <h2>Autocomplete and CollectionView:</h2>
     {{view JUI.AutocompleteTextField target="Demo.tagsController" action="addTag" sourceBinding="Demo.sortableController.content" valueBinding="Demo.sortableController.queryText"}}
     {{#collection contentBinding="Demo.tagsController"}}
-      {{content.name}} {{view JUI.Button label="Remove" targetBinding="parentView.parentView.content" action="removeTag"}}
+      {{content.name}} {{view JUI.Button title="Remove" targetBinding="parentView.parentView.content" action="removeTag"}}
     {{/collection}}
   
     <h2>Datepicker:</h2>
     {{view JUI.Datepicker}}
 
-    <h2>Buttons:</h2>
-    {{#view Demo.Buttons}}
-      <div id="divButton">&lt;DIV&gt; Button</div>
-      <a id="linkButton" href="#">&lt;A href="#"&gt; Button</a>
-      <button id="buttonButton">&lt;BUTTON&gt; Button</button>
-      <input id="submitButton" type="submit" value='&lt;INPUT type="submit"&gt; Button'/>
-      <input id="resetButton" type="reset" value='&lt;INPUT type="reset"&gt; Button'/>
-    {{/view}}
-
     <h2>Dialog:</h2>
-    {{view JUI.Button label="Open Info Dialog" target="Demo.dialogsController" action="openInfoDialog"}}
-    {{view JUI.Button label="Open Error Dialog" target="Demo.dialogsController" action="openErrorDialog"}}
-    {{view JUI.Button label="Open Confirmation Dialog" target="Demo.dialogsController" action="openConfirmDialog"}}
-    {{view JUI.Button label="Disabled Button" disabled=true}}
+    {{view JUI.Button title="Open Info Dialog" target="Demo.dialogsController" action="openInfoDialog"}}
+    {{view JUI.Button title="Open Error Dialog" target="Demo.dialogsController" action="openErrorDialog"}}
+    {{view JUI.Button title="Open Confirmation Dialog" target="Demo.dialogsController" action="openConfirmDialog"}}
+    {{view JUI.Button title="Disabled Button" disabled=true}}
 
     <h2>Slider:</h2>
     {{view Demo.StepSlider range="min" valueBinding="Demo.sliderController.value"}}

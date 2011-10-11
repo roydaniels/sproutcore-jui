@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Widget 1.9m5
+ * jQuery UI Widget 1.9m6
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -14,7 +14,10 @@ var slice = Array.prototype.slice;
 var _cleanData = $.cleanData;
 $.cleanData = function( elems ) {
 	for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-		$( elem ).triggerHandler( "remove" );
+		try {
+			$( elem ).triggerHandler( "remove" );
+		// http://bugs.jquery.com/ticket/8235
+		} catch( e ) {}
 	}
 	_cleanData( elems );
 };
@@ -49,7 +52,7 @@ $.widget = function( name, base, prototype ) {
 		if ( arguments.length ) {
 			this._createWidget( options, element );
 		}
-	}, $[ namespace ][ name ] );
+	}, $[ namespace ][ name ], { version: prototype.version } );
 
 	var basePrototype = new base();
 	// we need to make the options hash a property directly on the new instance
@@ -133,7 +136,7 @@ $.widget.bridge = function( name, object ) {
 				}
 				var methodValue = instance[ options ].apply( instance, args );
 				if ( methodValue !== instance && methodValue !== undefined ) {
-					returnValue = methodValue.jquery ?
+					returnValue = methodValue && methodValue.jquery ?
 						returnValue.pushStack( methodValue.get() ) :
 						methodValue;
 					return false;
@@ -239,9 +242,6 @@ $.Widget.prototype = {
 		}
 
 		if ( typeof key === "string" ) {
-			if ( value === undefined ) {
-				return this.options[ key ];
-			}
 			// handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
 			options = {};
 			parts = key.split( "." );
@@ -252,8 +252,15 @@ $.Widget.prototype = {
 					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
 					curOption = curOption[ parts[ i ] ];
 				}
-				curOption[ parts.pop() ] = value;
+				key = parts.pop();
+				if ( value === undefined ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
 			} else {
+				if ( value === undefined ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
 				options[ key ] = value;
 			}
 		}
@@ -263,9 +270,9 @@ $.Widget.prototype = {
 		return this;
 	},
 	_setOptions: function( options ) {
-		var self = this;
+		var that = this;
 		$.each( options, function( key, value ) {
-			self._setOption( key, value );
+			that._setOption( key, value );
 		});
 
 		return this;
@@ -301,9 +308,10 @@ $.Widget.prototype = {
 			element = $( element );
 			this.bindings = this.bindings.add( element );
 		}
+
 		var instance = this;
 		$.each( handlers, function( event, handler ) {
-			element.bind( event + "." + instance.widgetName, function() {
+			function handlerProxy() {
 				// allow widgets to customize the disabled handling
 				// - disabled as an array instead of boolean
 				// - disabled class as method for disabling individual parts
@@ -313,8 +321,25 @@ $.Widget.prototype = {
 				}
 				return ( typeof handler === "string" ? instance[ handler ] : handler )
 					.apply( instance, arguments );
-			});
+			}
+			var match = event.match( /^(\w+)\s*(.*)$/ ),
+				eventName = match[1] + "." + instance.widgetName,
+				selector = match[2];
+			if ( selector ) {
+				instance.widget().delegate( selector, eventName, handlerProxy );
+			} else {
+				element.bind( eventName, handlerProxy );
+			}
 		});
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
 	},
 
 	_hoverable: function( element ) {
@@ -375,11 +400,22 @@ $.Widget.prototype = {
 
 $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
 	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+		var hasOptions,
+			effectName = !options ?
+				method :
+				options === true || typeof options === "number" ?
+					defaultEffect :
+					options.effect || defaultEffect;
 		options = options || {};
-		var hasOptions = !$.isEmptyObject( options ),
-			effectName = options.effect || defaultEffect;
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		}
+		hasOptions = !$.isEmptyObject( options );
 		options.complete = callback;
-		if (options.delay) {
+		if ( options.delay ) {
 			element.delay( options.delay );
 		}
 		if ( hasOptions && $.effects && ( $.effects.effect[ effectName ] || $.uiBackCompat !== false && $.effects[ effectName ] ) ) {
@@ -387,11 +423,12 @@ $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
 		} else if ( effectName !== method && element[ effectName ] ) {
 			element[ effectName ]( options.duration, options.easing, callback );
 		} else {
-			element.queue( function() {
+			element.queue(function( next ) {
 				$( this )[ method ]();
 				if ( callback ) {
 					callback.call( element[ 0 ] );
 				}
+				next();
 			});
 		}
 	};

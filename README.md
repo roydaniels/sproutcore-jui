@@ -19,12 +19,9 @@ In your javascript asset manifest (app/assets/javascripts/application.js) add th
 In your stylesheet asset manifest (app/assets/stylesheets/application.css) add the following:
 
     /*
-     * = require jquery-ui
-     * = require aristo
+     * = require sproutcore-jui
      */
 
 TODO :
 
 * docs...
-* tabs widget
-* accordion widget

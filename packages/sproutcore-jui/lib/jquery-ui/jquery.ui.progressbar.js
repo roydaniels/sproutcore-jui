@@ -1,5 +1,5 @@
 /*
- * jQuery UI Progressbar 1.9m5
+ * jQuery UI Progressbar 1.9m6
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -14,6 +14,7 @@
 (function( $, undefined ) {
 
 $.widget( "ui.progressbar", {
+	version: "1.9m6",
 	options: {
 		value: 0,
 		max: 100
@@ -98,10 +99,6 @@ $.widget( "ui.progressbar", {
 			.width( percentage.toFixed(0) + "%" );
 		this.element.attr( "aria-valuenow", value );
 	}
-});
-
-$.extend( $.ui.progressbar, {
-	version: "1.9m5"
 });
 
 })( jQuery );

@@ -11,7 +11,7 @@ var get = SC.get, set = SC.set;
   @extends JUI.DialogButton
 */
 JUI.DialogButton = SC.Object.extend(JUI.TargetSupport, {
-  label: 'OK',
+  title: 'OK',
   action: 'close',
   executeAction: function() {
     this._super(get(this, 'action'));
@@ -68,7 +68,7 @@ JUI.Dialog = SC.View.extend(JUI.Widget, JUI.TargetSupport, {
       });
       set(this, buttonPath, button);
     }
-    var props = {text: get(button, 'label')};
+    var props = {text: get(button, 'title')};
     props.click = $.proxy(button, 'executeAction')
     return props;
   },
@@ -118,10 +118,10 @@ JUI.AlertDialog = JUI.ModalDialog.create({
 JUI.ConfirmDialog = JUI.ModalDialog.create(JUI.TargetSupport, {
   buttons: ['yes', 'no'],
   yes: JUI.DialogButton.extend({
-    label: 'YES',
+    title: 'YES',
     action: 'didConfirm'
   }),
-  no: JUI.DialogButton.extend({label: 'NO'}),
+  no: JUI.DialogButton.extend({title: 'NO'}),
   didConfirm: function() {
     get(this, 'answer').resolve();
     this.close();

@@ -1,4 +1,4 @@
-require File.expand_path("../vendor/bundler/setup", __FILE__)
+require "bundler/setup"
 require "erb"
 require "uglifier"
 require "sproutcore"
@@ -91,11 +91,64 @@ file "dist/sproutcore-jui.min.js" => "dist/sproutcore-jui.js" do
 end
 
 desc "Build SproutCore JUI"
-task :dist => ["dist/sproutcore-jui.min.js"]
+task :dist_sc => ["dist/sproutcore-jui.min.js"]
 
 desc "Clean build artifacts from previous builds"
-task :clean do
+task :clean_sc do
   sh "rm -rf tmp && rm -rf dist"
+end
+
+desc "Build SproutCore JUI"
+task :dist do
+  content = ''
+  [
+    'core.js',
+    'jquery-ui/jquery.ui.core.js',
+    'jquery-ui/jquery.ui.widget.js',
+    'jquery-ui/jquery.ui.position.js',
+    'jquery-ui/jquery.ui.mouse.js',
+    'mixins/widget.js',
+    'mixins/target_support.js',
+    # Widgets
+    # Autocomplete
+    'jquery-ui/jquery.ui.autocomplete.js',
+    'jquery-ui/ext/jquery.ui.autocomplete.js',
+    'controls/autocomplete.js',
+    # Button
+    'jquery-ui/jquery.ui.button.js',
+    'controls/button.js',
+    # Dialog
+    'jquery-ui/jquery.ui.dialog.js',
+    'jquery-ui/ext/jquery.ui.dialog.js',
+    'controls/dialog.js',
+    # Datepicker
+    'jquery-ui/jquery.ui.datepicker.js',
+    'controls/datepicker.js',
+    # Progressbar
+    'jquery-ui/jquery.ui.progressbar.js',
+    'controls/progressbar.js',
+    # Slider
+    'jquery-ui/jquery.ui.slider.js',
+    'controls/slider.js',
+    # Spinner
+    'jquery-ui/jquery.ui.spinner.js',
+    'controls/spinner.js'
+  ].each do |file|
+    code = File.read(File.join('packages/sproutcore-jui/lib', file))
+    if !file.match(/jquery.ui/)
+      code = "(function(){\n" + code + "\n})();\n"
+    end
+    content << code
+  end
+  mkdir 'tmp' if !File.exists?('tmp')
+  mkdir_p 'vendor/assets/javascripts' if !File.exists?('vendor/assets/javascripts')
+  File.open('tmp/sproutcore-jui.js', 'w') do |f|
+    f << content
+  end
+  content = strip_require('tmp/sproutcore-jui.js')
+  File.open('vendor/assets/javascripts/sproutcore-jui.js', 'w') do |f|
+    f << content
+  end
 end
 
 task :default => :dist
